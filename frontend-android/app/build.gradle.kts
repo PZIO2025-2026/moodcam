@@ -48,6 +48,9 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
+    // Jetpack compose
+    implementation("androidx.activity:activity-compose:1.9.0")
+
     // Material Design 3
     implementation(libs.androidx.material3)
 
