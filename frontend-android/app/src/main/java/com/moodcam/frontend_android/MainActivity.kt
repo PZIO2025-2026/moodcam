@@ -1,4 +1,4 @@
-package com.mood.frontend_android
+package com.moodcam.frontend_android
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
