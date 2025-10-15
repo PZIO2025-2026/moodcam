@@ -1,5 +1,5 @@
 # placeholder for main application code
 def main():
     print("Hello, World!")
-    print("Test Commit snjk")
+    print("Test Commit sn jk")
     print("Test Commit vlad")
