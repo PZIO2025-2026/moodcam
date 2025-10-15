@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.frontend_android"
+    namespace = "com.moodcam.frontend_android"
     compileSdk = 36
 
     buildFeatures {
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.frontend_android"
+        applicationId = "com.moodcam.frontend_android"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
