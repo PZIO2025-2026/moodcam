@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 
-    id("com.android.application")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
 }
@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    val composeBom = platform("androidx.compose:compose-bom:2025.10.00")
+    val composeBom = platform("androidx.compose:compose-bom:2025.01.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
@@ -70,7 +70,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
 
     // Add the dependency for the Firebase SDK for Google Analytics
     implementation("com.google.firebase:firebase-analytics")
