@@ -13,6 +13,7 @@ android {
 
     buildFeatures {
         compose = true
+        mlModelBinding = true
     }
 
     defaultConfig {
@@ -44,6 +45,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.scenecore)
+    implementation(libs.androidx.camera.view)
+    // Changed from play-services-mlkit-face-detection to bundled face-detection
+    implementation("com.google.mlkit:face-detection:16.1.7")
     val composeBom = platform("androidx.compose:compose-bom:2025.01.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
@@ -72,10 +77,32 @@ dependencies {
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
 
+    // CameraX
+    val cameraxVersion = "1.5.1"
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+
+    // OpenCV
+    implementation("org.opencv:opencv:4.9.0")
+
+    // Accompanist for Permissions
+    val accompanistVersion = "0.34.0"
+    implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
+
     // Add the dependency for the Firebase SDK for Google Analytics
     implementation("com.google.firebase:firebase-analytics")
 
     // Add the dependencies for Firebase Authentication and Cloud Firestore
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+
+    // TF Lite
+    implementation("org.tensorflow:tensorflow-lite:2.17.0")
+
+    // Dependency injection
+    val koinVersion = "3.5.3"
+    implementation("io.insert-koin:koin-android:${koinVersion}")
+    implementation("io.insert-koin:koin-androidx-compose:${koinVersion}")
+
 }
