@@ -8,8 +8,6 @@ import androidx.camera.core.ImageProxy
 import androidx.core.graphics.scale
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.Face
-import com.google.mlkit.vision.face.FaceDetection
-import com.google.mlkit.vision.face.FaceDetectorOptions
 import org.tensorflow.lite.Interpreter
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -68,11 +66,7 @@ fun detectLargestFace(
         imageProxy.image!!,
         imageProxy.imageInfo.rotationDegrees
     )
-
-    val options = FaceDetectorOptions.Builder()
-        .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
-        .build()
-    val detector = FaceDetection.getClient(options)
+    val detector = FaceDetectorProvider.detector
 
     detector.process(inputImage)
         .addOnSuccessListener { faces ->
@@ -84,7 +78,8 @@ fun detectLargestFace(
             onFaceDetected(null)
         }
 }
-fun cropAndResizeFace(bitmap: Bitmap, face: Face, size: Int = 48): Bitmap {
+/** Crop face by bounding box and resize to a square target size. */
+fun cropAndResizeFace(bitmap: Bitmap, face: Face, size: Int = ImageDefaults.FACE_CROP_SIZE): Bitmap {
     val box = face.boundingBox
     val x = box.left.coerceAtLeast(0)
     val y = box.top.coerceAtLeast(0)
@@ -97,8 +92,9 @@ fun cropAndResizeFace(bitmap: Bitmap, face: Face, size: Int = 48): Bitmap {
 
 // Simplified: Convert grayscale bitmap to normalized float buffer
 // Matches Python: face_norm = face_resized / 255.0
+// Convert grayscale Bitmap to normalized float buffer using configured divisor. 
 fun bitmapToGrayByteBuffer(bitmap: Bitmap): ByteBuffer {
-    val inputBuffer = ByteBuffer.allocateDirect(1 * bitmap.width * bitmap.height * 1 * 4)
+    val inputBuffer = ByteBuffer.allocateDirect(bitmap.width * bitmap.height * Float.BYTES)
     inputBuffer.order(ByteOrder.nativeOrder())
 
     var minVal = 255f
@@ -114,7 +110,7 @@ fun bitmapToGrayByteBuffer(bitmap: Bitmap): ByteBuffer {
             val gray = ((pixel shr 16) and 0xFF).toFloat()
             
             // Normalize to [0, 1] range - MUST match Python preprocessing
-            val normalized = gray / 255f
+            val normalized = gray / ImageDefaults.NORMALIZE_DIVISOR
             inputBuffer.putFloat(normalized)
             
             // Track stats for debugging
@@ -128,10 +124,10 @@ fun bitmapToGrayByteBuffer(bitmap: Bitmap): ByteBuffer {
     inputBuffer.rewind()
     
     // Log preprocessing stats (only occasionally to avoid spam)
-    if (count > 0 && Math.random() < 0.01) { // Log 1% of frames
+    if (count > 0 && Math.random() < ImageDefaults.LOG_PREPROCESS_SAMPLE_RATE) { // Log 1% of preprocessing
         val avgVal = sumVal / count
         Log.d(TAG, "Preprocessing stats - Min: $minVal, Max: $maxVal, Avg: $avgVal")
-        Log.d(TAG, "First 5 values: ${(0 until 5).map { inputBuffer.getFloat(it * 4) }}")
+        Log.d(TAG, "First 5 values: ${(0 until 5).map { inputBuffer.getFloat(it * Float.BYTES) }}")
         inputBuffer.rewind()
     }
     
@@ -145,28 +141,31 @@ fun processImageProxy(
 ) {
     // Detect face directly from ImageProxy (optimized)
     detectLargestFace(image) { face ->
-        if (face != null) {
-            // IMPROVED: Use Y plane directly for grayscale (no JPEG compression)
-            val grayBitmap = imageProxyToGrayBitmap(image)
-            val faceBitmap = cropAndResizeFace(grayBitmap, face)
-            val inputBuffer = bitmapToGrayByteBuffer(faceBitmap)
+        try {
+            if (face != null) {
+                // IMPROVED: Use Y plane directly for grayscale (no JPEG compression)
+                val grayBitmap = imageProxyToGrayBitmap(image)
+                val faceBitmap = cropAndResizeFace(grayBitmap, face)
+                val inputBuffer = bitmapToGrayByteBuffer(faceBitmap)
 
-            val output = Array(1) { FloatArray(7) }
-            tflite.run(inputBuffer, output)
+                val labels = EmotionLabels.LABELS
+                val output = Array(1) { FloatArray(labels.size) }
+                tflite.run(inputBuffer, output)
 
-            val labels = listOf("Angry", "Disgust", "Fear", "Happy", "Neutral", "Sad", "Surprise")
-            val maxIdx = output[0].indices.maxByOrNull { output[0][it] } ?: 0
-            
-            // Debug logging (occasional)
-            if (Math.random() < 0.05) { // Log 5% of predictions
-                Log.d(TAG, "Model output: ${output[0].joinToString { "%.3f".format(it) }}")
-                Log.d(TAG, "Predicted: ${labels[maxIdx]} (confidence: ${"%.3f".format(output[0][maxIdx])})")
+                val maxIdx = output[0].indices.maxByOrNull { output[0][it] } ?: 0
+
+                // Debug logging (occasional)
+                if (Math.random() < ImageDefaults.LOG_PREDICTION_SAMPLE_RATE) { // Log 5% of predictions
+                    Log.d(TAG, "Model output: ${output[0].joinToString { "%.3f".format(it) }}")
+                    Log.d(TAG, "Predicted: ${labels[maxIdx]} (confidence: ${"%.3f".format(output[0][maxIdx])})")
+                }
+
+                onEmotionDetected(labels[maxIdx])
+            } else {
+                onEmotionDetected(EmotionLabels.NO_FACE)
             }
-            
-            onEmotionDetected(labels[maxIdx])
-        } else {
-            onEmotionDetected("NoFace")
+        } finally {
+            image.close()
         }
-        image.close()
     }
 }
