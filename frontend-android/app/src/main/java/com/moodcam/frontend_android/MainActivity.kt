@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import com.moodcam.frontend_android.di.appModule
-import com.moodcam.frontend_android.ui.camera.CameraScreen
+import com.moodcam.frontend_android.navigation.AppNav
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             //UI components here
             MaterialTheme {
-                CameraScreen() // For test purposes
+                AppNav()
             }
         }
     }

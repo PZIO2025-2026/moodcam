@@ -94,7 +94,7 @@ fun cropAndResizeFace(bitmap: Bitmap, face: Face, size: Int = ImageDefaults.FACE
 // Matches Python: face_norm = face_resized / 255.0
 // Convert grayscale Bitmap to normalized float buffer using configured divisor. 
 fun bitmapToGrayByteBuffer(bitmap: Bitmap): ByteBuffer {
-    val inputBuffer = ByteBuffer.allocateDirect(bitmap.width * bitmap.height * Float.BYTES)
+    val inputBuffer = ByteBuffer.allocateDirect(bitmap.width * bitmap.height * Float.SIZE_BYTES)
     inputBuffer.order(ByteOrder.nativeOrder())
 
     var minVal = 255f
@@ -127,7 +127,7 @@ fun bitmapToGrayByteBuffer(bitmap: Bitmap): ByteBuffer {
     if (count > 0 && Math.random() < ImageDefaults.LOG_PREPROCESS_SAMPLE_RATE) { // Log 1% of preprocessing
         val avgVal = sumVal / count
         Log.d(TAG, "Preprocessing stats - Min: $minVal, Max: $maxVal, Avg: $avgVal")
-        Log.d(TAG, "First 5 values: ${(0 until 5).map { inputBuffer.getFloat(it * Float.BYTES) }}")
+        Log.d(TAG, "First 5 values: ${(0 until 5).map { inputBuffer.getFloat(it * Float.SIZE_BYTES) }}")
         inputBuffer.rewind()
     }
     
