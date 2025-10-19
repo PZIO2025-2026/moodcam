@@ -2,6 +2,7 @@
 
 package com.moodcam.frontend_android.ui.home
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,18 +17,38 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.moodcam.frontend_android.auth.vm.AuthState
+import com.moodcam.frontend_android.auth.vm.AuthViewModel
 
 @Composable
 fun HomeScreen(
+	modifier: Modifier = Modifier,
+	navController: NavController,
+	authViewModel: AuthViewModel,
+
 	onOpenCamera: () -> Unit,
 	onOpenGallery: () -> Unit,
 	onOpenHistory: () -> Unit = {},
 ) {
+	val authState = authViewModel.authState.observeAsState()
+
+	LaunchedEffect(authState.value) {
+		when (authState.value) {
+			is AuthState.Unauthenticated ->  navController.navigate("login")
+			else -> Unit
+		}
+	}
+
 	Scaffold(
 		topBar = {
 			CenterAlignedTopAppBar(title = { Text("MoodCam") })
@@ -50,6 +71,12 @@ fun HomeScreen(
 				style = MaterialTheme.typography.bodyLarge
 			)
 
+			TextButton(onClick = {
+				authViewModel.signout()
+			}) {
+				Text(text = "Sign out")
+			}
+
 			Spacer(Modifier.height(8.dp))
 
 			Button(onClick = onOpenCamera, modifier = Modifier.fillMaxWidth()) {
@@ -65,12 +92,14 @@ fun HomeScreen(
 	}
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun HomeScreenPreview() {
-	HomeScreen(
-		onOpenCamera = {},
-		onOpenGallery = {},
-		onOpenHistory = {},
-	)
-}
+//@Preview(showBackground = true)
+//@Composable
+//private fun HomeScreenPreview() {
+//	HomeScreen(
+//
+//
+//		onOpenCamera = {},
+//		onOpenGallery = {},
+//		onOpenHistory = {},
+//	)
+//}

@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.camera.view)
     // Changed from play-services-mlkit-face-detection to bundled face-detection
     implementation("com.google.mlkit:face-detection:16.1.7")
+    implementation(libs.androidx.runtime.livedata)
     val composeBom = platform("androidx.compose:compose-bom:2025.01.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
