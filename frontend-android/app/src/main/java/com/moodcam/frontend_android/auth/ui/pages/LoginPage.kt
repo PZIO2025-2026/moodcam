@@ -33,7 +33,9 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
 
     LaunchedEffect(authState.value) {
         when (authState.value) {
-            is AuthState.Authenticated ->  navController.navigate("home")
+            is AuthState.Authenticated ->  navController.navigate("home"){
+                popUpTo(0)
+            }
             is AuthState.Error -> Toast.makeText(context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
             else -> Unit
         }
@@ -65,7 +67,9 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
 
 
         TextButton(onClick = {
-            navController.navigate("signup")
+            navController.navigate("signup"){
+                launchSingleTop = true
+            }
         }) {
             Text(text = "Don't have account? Signup!")
         }
