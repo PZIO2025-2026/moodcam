@@ -44,7 +44,9 @@ fun HomeScreen(
 
 	LaunchedEffect(authState.value) {
 		when (authState.value) {
-			is AuthState.Unauthenticated ->  navController.navigate("login")
+			is AuthState.Unauthenticated ->  navController.navigate("login"){
+				popUpTo(0)
+			}
 			else -> Unit
 		}
 	}
