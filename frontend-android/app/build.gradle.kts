@@ -47,11 +47,11 @@ android {
 dependencies {
     implementation(libs.androidx.scenecore)
     implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.runtime.livedata)
 
     // Changed from play-services-mlkit-face-detection to bundled face-detection
     implementation("com.google.mlkit:face-detection:16.1.7")
 
-    implementation(libs.androidx.runtime.livedata)
 
     val composeBom = platform("androidx.compose:compose-bom:2025.01.00")
     implementation(composeBom)
@@ -62,6 +62,7 @@ dependencies {
 
     // Material Design 3
     implementation(libs.androidx.material3)
+    implementation("androidx.compose.material:material-icons-extended-android:1.6.8")
 
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")

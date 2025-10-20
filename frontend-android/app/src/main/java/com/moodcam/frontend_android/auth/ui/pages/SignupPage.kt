@@ -34,7 +34,9 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
 
     LaunchedEffect(authState.value) {
         when (authState.value) {
-            is AuthState.Authenticated ->  navController.navigate("home")
+            is AuthState.Authenticated ->  navController.navigate("home"){
+                popUpTo(0)
+            }
             is AuthState.Error -> Toast.makeText(context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
             else -> Unit
         }
@@ -72,7 +74,10 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
         Spacer(modifier = Modifier.height(24.dp))
 
         TextButton(onClick = {
-            navController.navigate("login")
+            navController.navigate("login"){
+                popUpTo("signup") { inclusive = true }
+                launchSingleTop = true
+            }
         }) {
             Text(text = "Already have account? Login!")
         }

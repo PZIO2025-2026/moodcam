@@ -1,3 +1,4 @@
+@file:OptIn(ExperimentalPermissionsApi::class)
 package com.moodcam.frontend_android.ui.camera
 
 import android.Manifest
@@ -5,19 +6,25 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.navigation.NavController // <-- 1. Добавлен импорт
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -29,6 +36,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
+    navController: NavController,
     classifierViewModel: EmotionClassifierViewModel = koinViewModel()
 ){
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
@@ -45,7 +53,7 @@ fun CameraScreen(
                         classifierViewModel.predict(image)
                     }
                 )
-                
+
                 // Emotion display overlay
                 val emotion = classifierViewModel.currentEmotion.value
                 Box(
@@ -73,6 +81,21 @@ fun CameraScreen(
                         },
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold
+                    )
+                }
+
+                IconButton(
+                    onClick = { navController.navigateUp() },
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(16.dp)
+                        .clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.5f))
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Return",
+                        tint = Color.White
                     )
                 }
             }
