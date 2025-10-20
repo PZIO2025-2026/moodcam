@@ -10,11 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,64 +28,36 @@ fun HomeScreen(
 	navController: NavController,
 	authViewModel: AuthViewModel,
 
-	onOpenCamera: () -> Unit,
-	onOpenGallery: () -> Unit,
-	onOpenHistory: () -> Unit = {},
+	onOpenCamera: () -> Unit
 ) {
 
 	AuthorizedScreenLayout(authViewModel = authViewModel, navController = navController) {
-
-		Scaffold(
-			topBar = {
-				CenterAlignedTopAppBar(title = { Text("MoodCam") })
+		Column(
+			modifier = modifier
+				.fillMaxSize()
+				.padding(24.dp),
+			horizontalAlignment = Alignment.CenterHorizontally,
+			verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
+		) {
+			Text(
+				text = "Witaj!",
+				style = MaterialTheme.typography.headlineMedium
+			)
+			Text(
+				text = "Rób zdjęcia i analizuj nastrój.",
+				style = MaterialTheme.typography.bodyLarge
+			)
+			TextButton(onClick = {
+				authViewModel.signout()
+			}) {
+				Text(text = "Sign out")
 			}
-		) { inner ->
-			Column(
-				modifier = Modifier
-					.padding(inner)
-					.fillMaxSize()
-					.padding(24.dp),
-				horizontalAlignment = Alignment.CenterHorizontally,
-				verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
-			) {
-				Text(
-					text = "Witaj!",
-					style = MaterialTheme.typography.headlineMedium
-				)
-				Text(
-					text = "Rób zdjęcia i analizuj nastrój.",
-					style = MaterialTheme.typography.bodyLarge
-				)
-				TextButton(onClick = {
-					authViewModel.signout()
-				}) {
-					Text(text = "Sign out")
-				}
 
-				Spacer(Modifier.height(8.dp))
+			Spacer(Modifier.height(8.dp))
 
-				Button(onClick = onOpenCamera, modifier = Modifier.fillMaxWidth()) {
-					Text("Otwórz camere")
-				}
-				OutlinedButton(onClick = onOpenGallery, modifier = Modifier.fillMaxWidth()) {
-					Text("Otwórz galerię")
-				}
-				OutlinedButton(onClick = onOpenHistory, modifier = Modifier.fillMaxWidth()) {
-					Text("Historia analiz")
-				}
+			Button(onClick = onOpenCamera, modifier = Modifier.fillMaxWidth()) {
+				Text("Otwórz camere")
 			}
 		}
 	}
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//private fun HomeScreenPreview() {
-//	HomeScreen(
-//
-//
-//		onOpenCamera = {},
-//		onOpenGallery = {},
-//		onOpenHistory = {},
-//	)
-//}
