@@ -28,7 +28,7 @@ fun AppNav(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
             )
         }
         composable("camera") {
-            CameraScreen()
+            CameraScreen(navController = nav)
         }
         composable("gallery") {
             // TODO: Implement gallery screen
@@ -52,8 +52,8 @@ private fun SimpleTextScreen(text: String) {
     Text(text)
 }
 
-@Preview
-@Composable
-private fun AppNavPreview(modifier: Modifier = Modifier, authViewModel: AuthViewModel = AuthViewModel()) {
-    AppNav(modifier, authViewModel)
-}
+//@Preview
+//@Composable
+//private fun AppNavPreview(modifier: Modifier = Modifier, authViewModel: AuthViewModel = AuthViewModel()) {
+//    AppNav(modifier, authViewModel)
+//}
