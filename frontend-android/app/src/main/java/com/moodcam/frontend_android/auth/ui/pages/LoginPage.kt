@@ -75,7 +75,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
         )
 
         Spacer(modifier = Modifier.height(64.dp))
-
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -114,7 +113,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     singleLine = true
                 )
-
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -144,7 +142,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
-
                 Button(
                     onClick = { authViewModel.login(email, password) },
                     modifier = Modifier
@@ -178,7 +175,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
         }
 
         Spacer(modifier = Modifier.height(32.dp))
-
         TextButton(
             onClick = {
                 navController.navigate("signup") {

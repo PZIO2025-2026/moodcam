@@ -78,8 +78,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
         )
 
         Spacer(modifier = Modifier.height(48.dp))
-
-        // Glassmorphism карточка
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -118,7 +116,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     singleLine = true
                 )
-
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -146,7 +143,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
                         }
                     }
                 )
-
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
@@ -176,7 +172,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
-
                 Button(
                     onClick = { authViewModel.signup(email, password) },
                     modifier = Modifier
@@ -210,7 +205,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
         }
 
         Spacer(modifier = Modifier.height(32.dp))
-
         TextButton(
             onClick = {
                 navController.navigate("login") {
