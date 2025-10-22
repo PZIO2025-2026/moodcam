@@ -50,7 +50,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
     }
 
     PremiumScreenLayout(modifier = modifier) {
-        // Заголовок с градиентом
         Text(
             text = "MOODCAM",
             fontSize = 48.sp,
@@ -77,7 +76,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
 
         Spacer(modifier = Modifier.height(64.dp))
 
-        // Glassmorphism карточка
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -99,7 +97,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
                     .padding(28.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                // Email поле
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
@@ -118,7 +115,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
                     singleLine = true
                 )
 
-                // Password поле
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -149,7 +145,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Премиум кнопка с градиентом
                 Button(
                     onClick = { authViewModel.login(email, password) },
                     modifier = Modifier
@@ -184,7 +179,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Signup ссылка
         TextButton(
             onClick = {
                 navController.navigate("signup") {

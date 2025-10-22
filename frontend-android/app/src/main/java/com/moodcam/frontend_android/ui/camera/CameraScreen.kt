@@ -50,8 +50,6 @@ fun CameraScreen(
                         classifierViewModel.predict(image)
                     }
                 )
-
-                // Премиум оверлей для эмоции
                 val emotion = classifierViewModel.currentEmotion.value
                 Surface(
                     modifier = Modifier
@@ -104,8 +102,6 @@ fun CameraScreen(
                         }
                     }
                 }
-
-                // Премиум кнопка назад
                 Surface(
                     onClick = { navController.navigateUp() },
                     modifier = Modifier
