@@ -130,7 +130,7 @@ fun HomeScreen(
 				}
 
 				Spacer(modifier = Modifier.height(8.dp))
-				
+
 				OutlinedButton(
 					onClick = { authViewModel.signout() },
 					modifier = Modifier

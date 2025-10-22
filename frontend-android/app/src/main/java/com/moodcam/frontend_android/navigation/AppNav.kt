@@ -14,10 +14,12 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -27,9 +29,11 @@ import androidx.navigation.compose.rememberNavController
 import com.moodcam.frontend_android.auth.ui.pages.LoginPage
 import com.moodcam.frontend_android.auth.ui.pages.SignupPage
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
-import com.moodcam.frontend_android.ui.components.BottomNavItem
+import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.ui.camera.CameraScreen
+import com.moodcam.frontend_android.ui.components.BottomNavItem
 import com.moodcam.frontend_android.ui.home.HomeScreen
+import com.moodcam.frontend_android.ui.profile.ProfileScreen
 
 // bottom bar
 val bottomNavItems = listOf(
@@ -41,7 +45,11 @@ val bottomNavItems = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNav(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
+fun AppNav(
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel,
+    userRepository: UserRepository
+) {
     val nav = rememberNavController()
 
     val navBackStackEntry by nav.currentBackStackEntryAsState()
@@ -53,19 +61,19 @@ fun AppNav(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
 
     Scaffold(
         modifier = modifier,
-        containerColor = androidx.compose.ui.graphics.Color(0xFF0F0C29),
+        containerColor = Color(0xFF0F0C29),
         topBar = {
             if (shouldShowBars) {
                 CenterAlignedTopAppBar(
                     title = {
                         Text(
                             "MoodCam",
-                            color = androidx.compose.ui.graphics.Color.White,
-                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
                         )
                     },
-                    colors = androidx.compose.material3.TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = androidx.compose.ui.graphics.Color(0xFF1A1625)
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color(0xFF1A1625)
                     )
                 )
             }
@@ -79,7 +87,7 @@ fun AppNav(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
         NavHost(
             navController = nav,
             startDestination = "login",
-            modifier = Modifier.padding(innerPadding) // <-- Используем padding
+            modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") {
                 HomeScreen(
@@ -95,7 +103,11 @@ fun AppNav(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
                 SimpleTextScreen("Gallery (TODO)") // TODO
             }
             composable("profile") {
-                SimpleTextScreen("profile (TODO)") // TODO
+                ProfileScreen(
+                    navController = nav,
+                    authViewModel = authViewModel,
+                    userRepository = userRepository
+                )
             }
             composable("history") {
                 SimpleTextScreen("History (TODO)") // TODO
@@ -162,6 +174,7 @@ fun AppBottomBar(navController: NavController, currentRoute: String?) {
         }
     }
 }
+
 @Composable
 private fun SimpleTextScreen(text: String) {
     Text(text)
