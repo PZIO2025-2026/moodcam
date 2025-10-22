@@ -32,6 +32,7 @@ fun PremiumScreenLayout(
         label = "offset"
     )
 
+    // Премиум градиент фона (iOS-стиль)
     val gradientColors = listOf(
         Color(0xFF0F0C29),
         Color(0xFF302B63),
@@ -49,6 +50,7 @@ fun PremiumScreenLayout(
                 )
             )
     ) {
+        // Размытые акцентные круги на фоне
         Box(
             modifier = Modifier
                 .size(300.dp)
