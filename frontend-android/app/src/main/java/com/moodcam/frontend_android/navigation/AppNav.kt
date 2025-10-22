@@ -11,14 +11,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -53,9 +53,21 @@ fun AppNav(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
 
     Scaffold(
         modifier = modifier,
+        containerColor = androidx.compose.ui.graphics.Color(0xFF0F0C29),
         topBar = {
             if (shouldShowBars) {
-                CenterAlignedTopAppBar(title = { Text("MoodCam") })
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            "MoodCam",
+                            color = androidx.compose.ui.graphics.Color.White,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                        )
+                    },
+                    colors = androidx.compose.material3.TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = androidx.compose.ui.graphics.Color(0xFF1A1625)
+                    )
+                )
             }
         },
         bottomBar = {
@@ -100,7 +112,10 @@ fun AppNav(modifier: Modifier = Modifier, authViewModel: AuthViewModel) {
 
 @Composable
 fun AppBottomBar(navController: NavController, currentRoute: String?) {
-    NavigationBar {
+    NavigationBar(
+        containerColor = Color(0xFF1A1625),
+        contentColor = Color.White
+    ) {
         bottomNavItems.forEach { item ->
             val isSelected = currentRoute?.let {
                 item.route == it
@@ -117,13 +132,36 @@ fun AppBottomBar(navController: NavController, currentRoute: String?) {
                         restoreState = true
                     }
                 },
-                icon = { Icon(item.icon, contentDescription = item.label) },
-                label = { Text(item.label) }
+                icon = {
+                    Icon(
+                        item.icon,
+                        contentDescription = item.label,
+                        tint = if (isSelected)
+                            Color(0xFF8B5CF6)
+                        else
+                            Color.White.copy(alpha = 0.6f)
+                    )
+                },
+                label = {
+                    Text(
+                        item.label,
+                        color = if (isSelected)
+                            Color(0xFF8B5CF6)
+                        else
+                            Color.White.copy(alpha = 0.6f)
+                    )
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = Color(0xFF8B5CF6),
+                    selectedTextColor = Color(0xFF8B5CF6),
+                    unselectedIconColor = Color.White.copy(alpha = 0.6f),
+                    unselectedTextColor = Color.White.copy(alpha = 0.6f),
+                    indicatorColor = Color(0xFF8B5CF6).copy(alpha = 0.2f)
+                )
             )
         }
     }
 }
-
 @Composable
 private fun SimpleTextScreen(text: String) {
     Text(text)
