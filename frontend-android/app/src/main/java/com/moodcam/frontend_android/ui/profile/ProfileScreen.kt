@@ -39,15 +39,17 @@ fun ProfileScreen(
     var userName by remember { mutableStateOf("John Doe") }
     var userAge by remember { mutableStateOf(25) }
     var userWithUsAtDays by remember { mutableStateOf("30 days") }
+    var userEmail by remember { mutableStateOf("User@gmail.com") }
 
     LaunchedEffect(uid) {
         if (uid != null) {
             userRepository.checkIsProfileCompleted(uid) { isComplete ->
                 if (isComplete) {
-                    userRepository.getProfile(uid) { name, age, days ->
+                    userRepository.getProfile(uid) { name, age, days, email ->
                         userName = name ?: "User"
                         userAge = age ?: 25
                         userWithUsAtDays = days ?: "30 days"
+                        userEmail = email ?: "User@gmail.com"
                         isProfileComplete = true
                     }
                 } else {
@@ -85,6 +87,7 @@ fun ProfileScreen(
             modifier = modifier,
             userName = userName,
             userAge = userAge,
+            userEmail = userEmail,
             userWithUsAtDays = userWithUsAtDays,
             authViewModel = authViewModel
         )
@@ -97,6 +100,7 @@ private fun FilledProfileScreen(
     userName: String,
     userAge: Int,
     userWithUsAtDays: String,
+    userEmail: String,
     authViewModel: AuthViewModel
 ) {
     PremiumScreenLayout(modifier = modifier) {
@@ -207,7 +211,7 @@ private fun FilledProfileScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Email: user@example.com",
+                        text = "Email: $userEmail",
                         fontSize = 16.sp,
                         color = Color.White.copy(alpha = 0.9f),
                         fontWeight = FontWeight.Medium

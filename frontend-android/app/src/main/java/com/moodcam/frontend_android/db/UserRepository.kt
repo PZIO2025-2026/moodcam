@@ -53,7 +53,7 @@ class UserRepository(val db: FirebaseFirestore) {
             }
     }
 
-    fun getProfile(uid: String, onResult: (name: String?, age: Int?, dateWithUs: String?) -> Unit) {
+    fun getProfile(uid: String, onResult: (name: String?, age: Int?, dateWithUs: String?, userEmail: String? ) -> Unit) {
         db.collection("users").document(uid)
             .get()
             .addOnSuccessListener { document ->
@@ -63,6 +63,7 @@ class UserRepository(val db: FirebaseFirestore) {
 
                 val dateWithUs = calculateDaysWithUs(createdAt)
 
+                val email = document.getString("email")
 
                 val currentAge = if (createdAt != null && userStartAge != null) {
                     calculateCurrentAge(createdAt, userStartAge)
@@ -70,10 +71,10 @@ class UserRepository(val db: FirebaseFirestore) {
                     userStartAge
                 }
                 
-                onResult(name, currentAge, dateWithUs)
+                onResult(name, currentAge, dateWithUs, email)
             }
             .addOnFailureListener {
-                onResult(null, null, null)
+                onResult(null, null, null, null)
             }
     }
 

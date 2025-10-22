@@ -33,6 +33,7 @@ import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.ui.camera.CameraScreen
 import com.moodcam.frontend_android.ui.components.BottomNavItem
 import com.moodcam.frontend_android.ui.home.HomeScreen
+import com.moodcam.frontend_android.ui.layouts.AuthorizedScreenLayout
 import com.moodcam.frontend_android.ui.profile.ProfileScreen
 
 // bottom bar
@@ -90,27 +91,52 @@ fun AppNav(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") {
-                HomeScreen(
-                    navController = nav,
+                AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    onOpenCamera = { nav.navigate("camera") }
-                )
+                    navController = nav
+                ) {
+                    HomeScreen(
+                        navController = nav,
+                        authViewModel = authViewModel,
+                        onOpenCamera = { nav.navigate("camera") }
+                    )
+                }
             }
             composable("camera") {
-                CameraScreen(navController = nav)
+                AuthorizedScreenLayout(
+                    authViewModel = authViewModel,
+                    navController = nav
+                ) {
+                    CameraScreen(navController = nav)
+                }
             }
             composable("gallery") {
-                SimpleTextScreen("Gallery (TODO)") // TODO
+                AuthorizedScreenLayout(
+                    authViewModel = authViewModel,
+                    navController = nav
+                ) {
+                    SimpleTextScreen("Gallery (TODO)") // TODO
+                }
             }
             composable("profile") {
-                ProfileScreen(
-                    navController = nav,
+                AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    userRepository = userRepository
-                )
+                    navController = nav
+                ) {
+                    ProfileScreen(
+                        navController = nav,
+                        authViewModel = authViewModel,
+                        userRepository = userRepository
+                    )
+                }
             }
             composable("history") {
-                SimpleTextScreen("History (TODO)") // TODO
+                AuthorizedScreenLayout(
+                    authViewModel = authViewModel,
+                    navController = nav
+                ) {
+                    SimpleTextScreen("History (TODO)") // TODO
+                }
             }
             composable("login") {
                 LoginPage(Modifier, nav, authViewModel)
