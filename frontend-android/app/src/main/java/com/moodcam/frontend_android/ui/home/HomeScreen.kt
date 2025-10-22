@@ -28,7 +28,6 @@ fun HomeScreen(
 	onOpenCamera: () -> Unit
 ) {
 	PremiumScreenLayout(modifier = modifier) {
-		// Заголовок с градиентом
 		Text(
 			text = "MOODCAM",
 			fontSize = 42.sp,
@@ -55,7 +54,6 @@ fun HomeScreen(
 
 		Spacer(modifier = Modifier.height(48.dp))
 
-		// Glassmorphism карточка
 		Surface(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -94,7 +92,6 @@ fun HomeScreen(
 
 				Spacer(modifier = Modifier.height(16.dp))
 
-				// Кнопка открытия камеры с градиентом
 				Button(
 					onClick = onOpenCamera,
 					modifier = Modifier
@@ -133,8 +130,7 @@ fun HomeScreen(
 				}
 
 				Spacer(modifier = Modifier.height(8.dp))
-
-				// Кнопка выхода
+				
 				OutlinedButton(
 					onClick = { authViewModel.signout() },
 					modifier = Modifier

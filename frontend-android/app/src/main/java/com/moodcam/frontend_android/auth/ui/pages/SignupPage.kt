@@ -53,7 +53,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
     }
 
     PremiumScreenLayout(modifier = modifier) {
-        // Заголовок с градиентом
         Text(
             text = "MOODCAM",
             fontSize = 48.sp,
@@ -79,8 +78,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
         )
 
         Spacer(modifier = Modifier.height(48.dp))
-
-        // Glassmorphism карточка
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -102,7 +99,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
                     .padding(28.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                // Email поле
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
@@ -120,8 +116,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     singleLine = true
                 )
-
-                // Password поле
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -149,8 +143,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
                         }
                     }
                 )
-
-                // Confirm Password поле
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
@@ -180,8 +172,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
-
-                // Премиум кнопка с градиентом
                 Button(
                     onClick = { authViewModel.signup(email, password) },
                     modifier = Modifier
@@ -215,8 +205,6 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
         }
 
         Spacer(modifier = Modifier.height(32.dp))
-
-        // Login ссылка
         TextButton(
             onClick = {
                 navController.navigate("login") {
