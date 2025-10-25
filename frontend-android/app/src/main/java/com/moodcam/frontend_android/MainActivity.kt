@@ -5,15 +5,22 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.moodcam.frontend_android.auth.vm.AuthViewModel
+import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.di.appModule
 import com.moodcam.frontend_android.navigation.AppNav
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.compose.get
 import org.koin.core.context.startKoin
 import org.opencv.android.OpenCVLoader
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Initialize the Android 12+ SplashScreen API
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         if (OpenCVLoader.initLocal()) {
             Log.i("OpenCV", "OpenCV loaded successfully!")
@@ -28,7 +35,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             //UI components here
             MaterialTheme {
-                AppNav()
+                val authViewModel: AuthViewModel = koinViewModel()
+                val userRepository: UserRepository = get()
+
+                AppNav(
+                    authViewModel = authViewModel,
+                    userRepository = userRepository
+                )
             }
         }
     }
