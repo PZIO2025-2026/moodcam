@@ -1,15 +1,21 @@
 package com.moodcam.frontend_android.ui.camera
 
 import android.Manifest
+import androidx.camera.core.CameraSelector
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +38,7 @@ fun CameraScreen(
     classifierViewModel: EmotionClassifierViewModel = koinViewModel()
 ){
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
+    var lensFacing by remember { mutableIntStateOf(CameraSelector.LENS_FACING_BACK) }
 
     when {
         cameraPermissionState.status.isGranted -> {
@@ -43,7 +50,8 @@ fun CameraScreen(
                     context = LocalContext.current,
                     onAnalyzeImage = { image ->
                         classifierViewModel.predict(image)
-                    }
+                    },
+                    lensFacing = lensFacing
                 )
                 
                 // Emotion display overlay
@@ -74,6 +82,18 @@ fun CameraScreen(
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold
                     )
+                }
+
+                FloatingActionButton(
+                    onClick = {
+                        lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK)
+                            CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(24.dp)
+                ) {
+                    Text("Switch")
                 }
             }
         }

@@ -29,7 +29,8 @@ fun CameraView(
     lifecycleOwner: LifecycleOwner,
     context: Context,
     onAnalyzeImage: (ImageProxy) -> Unit,
-    ) {
+    lensFacing: Int = CameraSelector.LENS_FACING_BACK,
+) {
     var cameraProvider: ProcessCameraProvider? by remember { mutableStateOf(null) }
     val previewView = remember { PreviewView(context) }
 
@@ -48,7 +49,11 @@ fun CameraView(
             AndroidView(
                 factory = { previewView },
                 modifier = Modifier.fillMaxSize()
-            ) {
+            )
+
+            LaunchedEffect(cameraProvider, lensFacing) {
+                val provider = cameraProvider ?: return@LaunchedEffect
+
                 val preview = Preview.Builder().build().also {
                     it.surfaceProvider = previewView.surfaceProvider
                 }
@@ -61,16 +66,34 @@ fun CameraView(
                         }
                     }
 
+                val selector = when (lensFacing) {
+                    CameraSelector.LENS_FACING_FRONT -> CameraSelector.DEFAULT_FRONT_CAMERA
+                    CameraSelector.LENS_FACING_BACK -> CameraSelector.DEFAULT_BACK_CAMERA
+                    else -> CameraSelector.DEFAULT_BACK_CAMERA
+                }
+
+                val hasRequestedCamera = try {
+                    provider.hasCamera(selector)
+                } catch (exc: Exception) {
+                    Log.e("CameraView", "Camera availability check failed", exc)
+                    false
+                }
 
                 val cameraSelector = when {
-                    cameraProvider!!.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) -> CameraSelector.DEFAULT_BACK_CAMERA
-                    cameraProvider!!.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) -> CameraSelector.DEFAULT_FRONT_CAMERA
-                    else -> throw IllegalStateException("No cameras available on this device.")
+                    hasRequestedCamera -> selector
+                    provider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) -> CameraSelector.DEFAULT_BACK_CAMERA
+                    provider.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) -> CameraSelector.DEFAULT_FRONT_CAMERA
+                    else -> null
+                }
+
+                if (cameraSelector == null) {
+                    Log.e("CameraView", "No cameras available on this device.")
+                    return@LaunchedEffect
                 }
 
                 try {
-                    cameraProvider!!.unbindAll()
-                    cameraProvider!!.bindToLifecycle(
+                    provider.unbindAll()
+                    provider.bindToLifecycle(
                         lifecycleOwner,
                         cameraSelector,
                         preview,
