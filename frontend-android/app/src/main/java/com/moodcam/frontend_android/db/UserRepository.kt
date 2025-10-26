@@ -61,10 +61,10 @@ class UserRepository(val db: FirebaseFirestore) {
         db.collection("users").document(uid)
             .update(updates)
             .addOnSuccessListener {
-                // Name updated successfully
+                // TODO
             }
-            .addOnFailureListener { _ ->
-                // Handle error if needed
+            .addOnFailureListener { e ->
+                // TODO
             }
     }
 
@@ -85,7 +85,7 @@ class UserRepository(val db: FirebaseFirestore) {
                 } else {
                     userStartAge
                 }
-                
+
                 onResult(name, currentAge, dateWithUs, email)
             }
             .addOnFailureListener {
@@ -119,7 +119,7 @@ class UserRepository(val db: FirebaseFirestore) {
 
         val yearsPassedFloat = diffMillis / (365.25 * 24 * 60 * 60 * 1000)
         val yearsPassed = yearsPassedFloat.toInt()
-        
+
         return startAge + yearsPassed
     }
 
