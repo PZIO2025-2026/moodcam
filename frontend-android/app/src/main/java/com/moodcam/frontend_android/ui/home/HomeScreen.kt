@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -126,36 +125,6 @@ fun HomeScreen(
 						fontSize = 18.sp,
 						fontWeight = FontWeight.SemiBold,
 						color = Color.White
-					)
-				}
-
-				Spacer(modifier = Modifier.height(8.dp))
-
-				OutlinedButton(
-					onClick = { authViewModel.signout() },
-					modifier = Modifier
-						.fillMaxWidth()
-						.height(52.dp),
-					shape = RoundedCornerShape(16.dp),
-					colors = ButtonDefaults.outlinedButtonColors(
-						contentColor = Color.White.copy(alpha = 0.8f)
-					),
-					border = androidx.compose.foundation.BorderStroke(
-						1.dp,
-						Color.White.copy(alpha = 0.3f)
-					)
-				) {
-					Icon(
-						imageVector = Icons.Filled.Logout,
-						contentDescription = "Logout",
-						tint = Color.White.copy(alpha = 0.8f),
-						modifier = Modifier.size(20.dp)
-					)
-					Spacer(modifier = Modifier.width(8.dp))
-					Text(
-						"Sign Out",
-						fontSize = 16.sp,
-						fontWeight = FontWeight.Medium
 					)
 				}
 			}
