@@ -19,9 +19,10 @@ import org.opencv.android.OpenCVLoader
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Initialize the Android 12+ SplashScreen API
         installSplashScreen()
+        
         super.onCreate(savedInstanceState)
+        
         if (OpenCVLoader.initLocal()) {
             Log.i("OpenCV", "OpenCV loaded successfully!")
         } else {

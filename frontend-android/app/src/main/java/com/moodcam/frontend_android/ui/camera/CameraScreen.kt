@@ -2,14 +2,16 @@
 package com.moodcam.frontend_android.ui.camera
 
 import android.Manifest
+import androidx.camera.core.CameraSelector
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
+import com.moodcam.frontend_android.auth.vm.AuthViewModel
+import com.moodcam.frontend_android.db.EmotionHistoryRepository
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -34,13 +38,17 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CameraScreen(
     navController: NavController,
-    classifierViewModel: EmotionClassifierViewModel = koinViewModel()
+    authViewModel: AuthViewModel,
+    classifierViewModel: EmotionClassifierViewModel = koinViewModel(),
+    historyRepository: EmotionHistoryRepository = org.koin.androidx.compose.get()
 ) {
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
     when {
         cameraPermissionState.status.isGranted -> {
             Box(modifier = Modifier.fillMaxSize()) {
+                var useFrontCamera by remember { mutableStateOf(false) }
+
                 // Camera preview (full screen)
                 CameraView(
                     modifier = Modifier.fillMaxSize(),
@@ -48,9 +56,16 @@ fun CameraScreen(
                     context = LocalContext.current,
                     onAnalyzeImage = { image ->
                         classifierViewModel.predict(image)
+                    },
+                    cameraSelector = if (useFrontCamera) {
+                        CameraSelector.DEFAULT_FRONT_CAMERA
+                    } else {
+                        CameraSelector.DEFAULT_BACK_CAMERA
                     }
                 )
                 val emotion = classifierViewModel.currentEmotion.value
+                var lastSavedEmotion by remember { mutableStateOf("") }
+                var lastSavedAt by remember { mutableStateOf(0L) }
                 Surface(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
@@ -99,6 +114,19 @@ fun CameraScreen(
                                 fontSize = 32.sp,
                                 fontWeight = FontWeight.Bold
                             )
+
+                            // Save to history when emotion changes and not placeholder
+                            LaunchedEffect(emotion) {
+                                val now = System.currentTimeMillis()
+                                val uid = authViewModel.getUserId()
+                                val shouldSave = emotion !in listOf("Detecting...", "NoFace") &&
+                                        emotion != lastSavedEmotion && (now - lastSavedAt) > 5000
+                                if (uid != null && shouldSave) {
+                                    historyRepository.addEmotion(uid, emotion)
+                                    lastSavedEmotion = emotion
+                                    lastSavedAt = now
+                                }
+                            }
                         }
                     }
                 }
@@ -129,6 +157,39 @@ fun CameraScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Return",
+                            tint = Color.White,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+                }
+                // Switch camera button (top-end)
+                Surface(
+                    onClick = { useFrontCamera = !useFrontCamera },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(24.dp)
+                        .size(56.dp),
+                    shape = CircleShape,
+                    color = Color.Black.copy(alpha = 0.6f),
+                    tonalElevation = 0.dp,
+                    shadowElevation = 12.dp
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.radialGradient(
+                                    colors = listOf(
+                                        Color.White.copy(alpha = 0.15f),
+                                        Color.White.copy(alpha = 0.05f)
+                                    )
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Cameraswitch,
+                            contentDescription = "Switch camera",
                             tint = Color.White,
                             modifier = Modifier.size(28.dp)
                         )

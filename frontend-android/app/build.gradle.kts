@@ -49,6 +49,9 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.runtime.livedata)
 
+    // Splash Screen API
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
     // Changed from play-services-mlkit-face-detection to bundled face-detection
     implementation("com.google.mlkit:face-detection:16.1.7")
 

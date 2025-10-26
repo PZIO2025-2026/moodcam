@@ -1,3 +1,4 @@
+
 package com.moodcam.frontend_android.ui.components.camera
 
 import android.content.Context
@@ -29,7 +30,8 @@ fun CameraView(
     lifecycleOwner: LifecycleOwner,
     context: Context,
     onAnalyzeImage: (ImageProxy) -> Unit,
-    ) {
+    cameraSelector: CameraSelector? = null,
+) {
     var cameraProvider: ProcessCameraProvider? by remember { mutableStateOf(null) }
     val previewView = remember { PreviewView(context) }
 
@@ -48,10 +50,16 @@ fun CameraView(
             AndroidView(
                 factory = { previewView },
                 modifier = Modifier.fillMaxSize()
-            ) {
+            )
+
+            // Bind or re-bind camera when provider or selector changes
+            LaunchedEffect(cameraProvider, cameraSelector) {
+                val provider = cameraProvider ?: return@LaunchedEffect
+
                 val preview = Preview.Builder().build().also {
                     it.surfaceProvider = previewView.surfaceProvider
                 }
+
                 val analyzer = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
@@ -61,18 +69,17 @@ fun CameraView(
                         }
                     }
 
-
-                val cameraSelector = when {
-                    cameraProvider!!.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) -> CameraSelector.DEFAULT_BACK_CAMERA
-                    cameraProvider!!.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) -> CameraSelector.DEFAULT_FRONT_CAMERA
+                val selectorToUse = cameraSelector ?: when {
+                    provider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) -> CameraSelector.DEFAULT_BACK_CAMERA
+                    provider.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) -> CameraSelector.DEFAULT_FRONT_CAMERA
                     else -> throw IllegalStateException("No cameras available on this device.")
                 }
 
                 try {
-                    cameraProvider!!.unbindAll()
-                    cameraProvider!!.bindToLifecycle(
+                    provider.unbindAll()
+                    provider.bindToLifecycle(
                         lifecycleOwner,
-                        cameraSelector,
+                        selectorToUse,
                         preview,
                         analyzer
                     )

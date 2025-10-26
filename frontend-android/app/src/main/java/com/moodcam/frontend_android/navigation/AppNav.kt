@@ -35,6 +35,8 @@ import com.moodcam.frontend_android.ui.components.BottomNavItem
 import com.moodcam.frontend_android.ui.home.HomeScreen
 import com.moodcam.frontend_android.ui.layouts.AuthorizedScreenLayout
 import com.moodcam.frontend_android.ui.profile.ProfileScreen
+import com.moodcam.frontend_android.ui.history.EmotionHistoryScreen
+import com.moodcam.frontend_android.ui.profile.edit.EditProfileScreen
 
 // bottom bar
 val bottomNavItems = listOf(
@@ -107,7 +109,7 @@ fun AppNav(
                     authViewModel = authViewModel,
                     navController = nav
                 ) {
-                    CameraScreen(navController = nav)
+                    CameraScreen(navController = nav, authViewModel = authViewModel)
                 }
             }
             composable("gallery") {
@@ -130,12 +132,27 @@ fun AppNav(
                     )
                 }
             }
+            composable("editProfile") {
+                AuthorizedScreenLayout(
+                    authViewModel = authViewModel,
+                    navController = nav
+                ) {
+                    EditProfileScreen(
+                        navController = nav,
+                        authViewModel = authViewModel,
+                        userRepository = userRepository
+                    )
+                }
+            }
             composable("history") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
                     navController = nav
                 ) {
-                    SimpleTextScreen("History (TODO)") // TODO
+                    EmotionHistoryScreen(
+                        navController = nav,
+                        authViewModel = authViewModel
+                    )
                 }
             }
             composable("login") {
