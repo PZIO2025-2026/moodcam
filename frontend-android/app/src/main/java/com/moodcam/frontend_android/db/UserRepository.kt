@@ -53,6 +53,21 @@ class UserRepository(val db: FirebaseFirestore) {
             }
     }
 
+    fun updateName(uid: String, name: String) {
+        val updates = hashMapOf<String, Any>(
+            "name" to name
+        )
+
+        db.collection("users").document(uid)
+            .update(updates)
+            .addOnSuccessListener {
+                // TODO
+            }
+            .addOnFailureListener { e ->
+                // TODO
+            }
+    }
+
     fun getProfile(uid: String, onResult: (name: String?, age: Int?, dateWithUs: String?, userEmail: String? ) -> Unit) {
         db.collection("users").document(uid)
             .get()
@@ -70,7 +85,7 @@ class UserRepository(val db: FirebaseFirestore) {
                 } else {
                     userStartAge
                 }
-                
+
                 onResult(name, currentAge, dateWithUs, email)
             }
             .addOnFailureListener {
@@ -104,7 +119,7 @@ class UserRepository(val db: FirebaseFirestore) {
 
         val yearsPassedFloat = diffMillis / (365.25 * 24 * 60 * 60 * 1000)
         val yearsPassed = yearsPassedFloat.toInt()
-        
+
         return startAge + yearsPassed
     }
 
