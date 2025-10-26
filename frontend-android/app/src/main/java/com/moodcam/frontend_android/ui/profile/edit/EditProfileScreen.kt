@@ -116,21 +116,15 @@ fun EditProfileScreen(
 
                 OutlinedTextField(
                     value = ageText,
-                    onValueChange = { input ->
-                        val filtered = input.filter { it.isDigit() }.take(3)
-                        ageText = filtered
-                    },
-                    label = { Text("Age") },
+                    onValueChange = {},
+                    label = { Text("Age (read-only)") },
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    enabled = false,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFF8B5CF6),
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        focusedLabelColor = Color(0xFF8B5CF6),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
+                        disabledBorderColor = Color.White.copy(alpha = 0.2f),
+                        disabledLabelColor = Color.White.copy(alpha = 0.5f),
+                        disabledTextColor = Color.White.copy(alpha = 0.7f)
                     )
                 )
 
@@ -159,9 +153,8 @@ fun EditProfileScreen(
                         onClick = {
                             if (saving) return@Button
                             val finalName = name.trim()
-                            val age = ageText.toIntOrNull()
-                            if (finalName.isEmpty() || age == null || age !in 1..120) {
-                                error = "Please enter a valid name and age (1-120)."
+                            if (finalName.isEmpty()) {
+                                error = "Please enter a valid name."
                                 return@Button
                             }
                             if (uid == null) {
@@ -170,8 +163,9 @@ fun EditProfileScreen(
                             }
                             error = null
                             saving = true
-                            userRepository.saveProfile(uid, finalName, age)
-                            // saveProfile uses listeners; simulate success path by returning immediately to profile
+                            // Update only name; age is immutable after onboarding
+                            userRepository.updateName(uid, finalName)
+                            // simulate success path by returning immediately to profile
                             navController.previousBackStackEntry?.savedStateHandle?.set("profileUpdated", true)
                             navController.popBackStack()
                         },

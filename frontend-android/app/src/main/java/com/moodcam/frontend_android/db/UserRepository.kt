@@ -53,6 +53,21 @@ class UserRepository(val db: FirebaseFirestore) {
             }
     }
 
+    fun updateName(uid: String, name: String) {
+        val updates = hashMapOf<String, Any>(
+            "name" to name
+        )
+
+        db.collection("users").document(uid)
+            .update(updates)
+            .addOnSuccessListener {
+                // Name updated successfully
+            }
+            .addOnFailureListener { _ ->
+                // Handle error if needed
+            }
+    }
+
     fun getProfile(uid: String, onResult: (name: String?, age: Int?, dateWithUs: String?, userEmail: String? ) -> Unit) {
         db.collection("users").document(uid)
             .get()

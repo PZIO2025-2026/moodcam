@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Фон с цветом как на PNG -->
     <item android:drawable="@color/splash_background_color" />
-    
-    <!-- Логотип по центру -->
     <item>
         <bitmap
             android:gravity="center"
