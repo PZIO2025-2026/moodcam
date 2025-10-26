@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.lifecycle.Observer
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
@@ -61,6 +63,28 @@ fun ProfileScreen(
             isProfileComplete = false
         }
     }
+    // Listen for updates from EditProfileScreen and refresh profile on return
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(navController, uid) {
+        val handle = navController.currentBackStackEntry?.savedStateHandle
+        val liveData = handle?.getLiveData<Boolean>("profileUpdated")
+        val observer = Observer<Boolean> { updated ->
+            if (updated == true && uid != null) {
+                userRepository.getProfile(uid) { name, age, days, email ->
+                    userName = name ?: userName
+                    userAge = age ?: userAge
+                    userWithUsAtDays = days ?: userWithUsAtDays
+                    userEmail = email ?: userEmail
+                }
+                handle?.set("profileUpdated", false)
+            }
+        }
+        liveData?.observe(lifecycleOwner, observer)
+        onDispose {
+            liveData?.removeObserver(observer)
+        }
+    }
+
     if (isProfileComplete == null) {
         PremiumScreenLayout(modifier = modifier) {
             CircularProgressIndicator(
@@ -90,7 +114,8 @@ fun ProfileScreen(
             userAge = userAge,
             userEmail = userEmail,
             userWithUsAtDays = userWithUsAtDays,
-            authViewModel = authViewModel
+            authViewModel = authViewModel,
+            navController = navController
         )
     }
 }
@@ -102,7 +127,8 @@ private fun FilledProfileScreen(
     userAge: Int,
     userWithUsAtDays: String,
     userEmail: String,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    navController: NavController
 ) {
     PremiumScreenLayout(modifier = modifier) {
         Text(
@@ -187,7 +213,7 @@ private fun FilledProfileScreen(
                     )
                     Spacer(Modifier.weight(1f))
                     IconButton(
-                        onClick = { /* TODO: Edit name */ },
+                        onClick = { navController.navigate("editProfile") },
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
@@ -218,20 +244,6 @@ private fun FilledProfileScreen(
                         fontWeight = FontWeight.Medium
                     )
                     Spacer(Modifier.weight(1f))
-                    IconButton(
-                        onClick = { /* TODO: Edit email */ },
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(Color.White.copy(alpha = 0.1f))
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Edit,
-                            contentDescription = "Edit Email",
-                            tint = Color(0xFF8B5CF6),
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
                 }
 
                 HorizontalDivider(

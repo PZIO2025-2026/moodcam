@@ -35,6 +35,7 @@ import com.moodcam.frontend_android.ui.components.BottomNavItem
 import com.moodcam.frontend_android.ui.home.HomeScreen
 import com.moodcam.frontend_android.ui.layouts.AuthorizedScreenLayout
 import com.moodcam.frontend_android.ui.profile.ProfileScreen
+import com.moodcam.frontend_android.ui.profile.edit.EditProfileScreen
 
 // bottom bar
 val bottomNavItems = listOf(
@@ -124,6 +125,18 @@ fun AppNav(
                     navController = nav
                 ) {
                     ProfileScreen(
+                        navController = nav,
+                        authViewModel = authViewModel,
+                        userRepository = userRepository
+                    )
+                }
+            }
+            composable("editProfile") {
+                AuthorizedScreenLayout(
+                    authViewModel = authViewModel,
+                    navController = nav
+                ) {
+                    EditProfileScreen(
                         navController = nav,
                         authViewModel = authViewModel,
                         userRepository = userRepository
