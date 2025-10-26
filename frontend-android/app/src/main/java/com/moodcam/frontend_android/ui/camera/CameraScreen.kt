@@ -11,11 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
+import com.moodcam.frontend_android.auth.vm.AuthViewModel
+import com.moodcam.frontend_android.db.EmotionHistoryRepository
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -40,7 +38,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CameraScreen(
     navController: NavController,
-    classifierViewModel: EmotionClassifierViewModel = koinViewModel()
+    authViewModel: AuthViewModel,
+    classifierViewModel: EmotionClassifierViewModel = koinViewModel(),
+    historyRepository: EmotionHistoryRepository = org.koin.androidx.compose.get()
 ) {
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
@@ -64,6 +64,8 @@ fun CameraScreen(
                     }
                 )
                 val emotion = classifierViewModel.currentEmotion.value
+                var lastSavedEmotion by remember { mutableStateOf("") }
+                var lastSavedAt by remember { mutableStateOf(0L) }
                 Surface(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
@@ -112,6 +114,19 @@ fun CameraScreen(
                                 fontSize = 32.sp,
                                 fontWeight = FontWeight.Bold
                             )
+
+                            // Save to history when emotion changes and not placeholder
+                            LaunchedEffect(emotion) {
+                                val now = System.currentTimeMillis()
+                                val uid = authViewModel.getUserId()
+                                val shouldSave = emotion !in listOf("Detecting...", "NoFace") &&
+                                        emotion != lastSavedEmotion && (now - lastSavedAt) > 5000
+                                if (uid != null && shouldSave) {
+                                    historyRepository.addEmotion(uid, emotion)
+                                    lastSavedEmotion = emotion
+                                    lastSavedAt = now
+                                }
+                            }
                         }
                     }
                 }

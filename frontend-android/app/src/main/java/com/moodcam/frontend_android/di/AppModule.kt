@@ -8,6 +8,7 @@ import com.google.mlkit.vision.face.FaceDetector
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.db.UserRepository
+import com.moodcam.frontend_android.db.EmotionHistoryRepository
 import com.moodcam.frontend_android.viewmodel.EmotionClassifierViewModel
 import com.moodcam.frontend_android.helpers.loadModelFile
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -29,6 +30,7 @@ val appModule = module {
 
     //repository
     single { UserRepository(get()) }
+    single { EmotionHistoryRepository(get()) }
 
     //viewModels
     viewModel { AuthViewModel(get(), get()) }
