@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.db.EmotionHistoryRepository
-import com.moodcam.frontend_android.db.EmotionRecord
+import com.moodcam.frontend_android.db.entities.EmotionRecord
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 import org.koin.androidx.compose.get
 import java.text.SimpleDateFormat
@@ -30,7 +30,6 @@ import java.util.Locale
 @Composable
 fun EmotionHistoryScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
     authViewModel: AuthViewModel,
     historyRepository: EmotionHistoryRepository = get()
 ) {

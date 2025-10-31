@@ -2,11 +2,8 @@ package com.moodcam.frontend_android.db
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.moodcam.frontend_android.db.entities.EmotionRecord
 
-data class EmotionRecord(
-    val emotion: String,
-    val createdAt: Timestamp
-)
 
 class EmotionHistoryRepository(private val db: FirebaseFirestore) {
 

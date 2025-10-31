@@ -106,7 +106,7 @@ class UserRepository(val db: FirebaseFirestore) {
 
         val yearsPassedInt = (diffMillis / (24 * 60 * 60 * 1000)).toInt();
 
-        val returnString = yearsPassedInt.toString() + " days"
+        val returnString = "$yearsPassedInt days"
 
         return returnString
     }
