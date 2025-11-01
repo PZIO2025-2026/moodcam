@@ -37,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
-    navController: NavController,
+    onNavigateUp: () -> Unit,
     authViewModel: AuthViewModel,
     classifierViewModel: EmotionClassifierViewModel = koinViewModel(),
     historyRepository: EmotionHistoryRepository = org.koin.androidx.compose.get()
@@ -131,7 +131,7 @@ fun CameraScreen(
                     }
                 }
                 Surface(
-                    onClick = { navController.navigateUp() },
+                    onClick = { onNavigateUp() },
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(24.dp)

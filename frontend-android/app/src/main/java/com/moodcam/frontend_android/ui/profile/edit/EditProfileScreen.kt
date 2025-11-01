@@ -23,32 +23,20 @@ import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 @Composable
 fun EditProfileScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    authViewModel: AuthViewModel,
-    userRepository: UserRepository
+
+    initialName: String,
+    initialAge: String,
+    initialEmail: String,
+    isLoading: Boolean,
+    isSaving: Boolean,
+    externalError: String?,
+
+    onSaveClicked: (newName: String) -> Unit,
+    onCancelClicked: () -> Unit
 ) {
-    var name by remember { mutableStateOf("") }
-    var ageText by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var loading by remember { mutableStateOf(true) }
-    var saving by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf<String?>(null) }
+    var name by remember(initialName) { mutableStateOf(initialName) }
 
-    val uid = authViewModel.getUserId()
-
-    LaunchedEffect(uid) {
-        if (uid != null) {
-            userRepository.getProfile(uid) { currentName, currentAge, _, currentEmail ->
-                name = currentName ?: ""
-                ageText = (currentAge ?: 18).toString()
-                email = currentEmail ?: ""
-                loading = false
-            }
-        } else {
-            error = "User not authenticated"
-            loading = false
-        }
-    }
+    var validationError by remember { mutableStateOf<String?>(null) }
 
     PremiumScreenLayout(modifier = modifier) {
         Text(
@@ -68,13 +56,14 @@ fun EditProfileScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        if (loading) {
+        if (isLoading) {
             CircularProgressIndicator(color = Color(0xFF8B5CF6))
             return@PremiumScreenLayout
         }
 
-        if (error != null) {
-            Text(text = error!!, color = Color.Red)
+        val errorToShow = validationError ?: externalError
+        if (errorToShow != null) {
+            Text(text = errorToShow, color = Color.Red)
         }
 
         Surface(
@@ -113,9 +102,8 @@ fun EditProfileScreen(
                         unfocusedTextColor = Color.White
                     )
                 )
-
                 OutlinedTextField(
-                    value = ageText,
+                    value = initialAge,
                     onValueChange = {},
                     label = { Text("Age (read-only)") },
                     singleLine = true,
@@ -129,7 +117,7 @@ fun EditProfileScreen(
                 )
 
                 OutlinedTextField(
-                    value = email,
+                    value = initialEmail,
                     onValueChange = {},
                     label = { Text("Email (read-only)") },
                     singleLine = true,
@@ -151,35 +139,25 @@ fun EditProfileScreen(
                 ) {
                     Button(
                         onClick = {
-                            if (saving) return@Button
                             val finalName = name.trim()
                             if (finalName.isEmpty()) {
-                                error = "Please enter a valid name."
-                                return@Button
+                                validationError = "Please enter a valid name."
+                            } else {
+                                validationError = null
+                                onSaveClicked(finalName)
                             }
-                            if (uid == null) {
-                                error = "User not authenticated"
-                                return@Button
-                            }
-                            error = null
-                            saving = true
-                            // Update only name; age is immutable after onboarding
-                            userRepository.updateName(uid, finalName)
-                            // simulate success path by returning immediately to profile
-                            navController.previousBackStackEntry?.savedStateHandle?.set("profileUpdated", true)
-                            navController.popBackStack()
                         },
                         modifier = Modifier.weight(1f),
-                        enabled = !saving,
+                        enabled = !isSaving,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B5CF6))
                     ) {
-                        Text(if (saving) "Saving..." else "Save")
+                        Text(if (isSaving) "Saving..." else "Save")
                     }
 
                     OutlinedButton(
-                        onClick = { navController.popBackStack() },
+                        onClick = { onCancelClicked() },
                         modifier = Modifier.weight(1f),
-                        enabled = !saving,
+                        enabled = !isSaving,
                         border = ButtonDefaults.outlinedButtonBorder.copy(
                             width = 1.dp
                         )

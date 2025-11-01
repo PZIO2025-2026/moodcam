@@ -28,7 +28,12 @@ import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 
 @Composable
-fun SignupPage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
+fun SignupPage(
+    modifier: Modifier = Modifier,
+    onHomeNavigate: () -> Unit,
+    onLoginNavigate: () -> Unit,
+    authViewModel: AuthViewModel
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -40,8 +45,9 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
 
     LaunchedEffect(authState.value) {
         when (authState.value) {
-            is AuthState.Authenticated -> navController.navigate("home") {
-                popUpTo(0)
+            is AuthState.Authenticated ->
+            {
+                onHomeNavigate()
             }
             is AuthState.Error -> Toast.makeText(
                 context,
@@ -207,10 +213,7 @@ fun SignupPage(modifier: Modifier = Modifier, navController: NavController, auth
         Spacer(modifier = Modifier.height(32.dp))
         TextButton(
             onClick = {
-                navController.navigate("login") {
-                    popUpTo("signup") { inclusive = true }
-                    launchSingleTop = true
-                }
+                onLoginNavigate()
             }
         ) {
             Text(
