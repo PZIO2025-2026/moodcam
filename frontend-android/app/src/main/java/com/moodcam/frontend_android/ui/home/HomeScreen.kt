@@ -22,8 +22,6 @@ import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 @Composable
 fun HomeScreen(
 	modifier: Modifier = Modifier,
-	navController: NavController,
-	authViewModel: AuthViewModel,
 	onOpenCamera: () -> Unit
 ) {
 	PremiumScreenLayout(modifier = modifier) {

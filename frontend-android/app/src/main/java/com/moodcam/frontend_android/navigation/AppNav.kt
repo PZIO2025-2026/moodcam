@@ -16,7 +16,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +37,7 @@ import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.ui.camera.CameraScreen
 import com.moodcam.frontend_android.ui.components.BottomNavItem
+import com.moodcam.frontend_android.ui.components.SimpleTextScreen
 import com.moodcam.frontend_android.ui.home.HomeScreen
 import com.moodcam.frontend_android.ui.layouts.AuthorizedScreenLayout
 import com.moodcam.frontend_android.ui.profile.ProfileScreen
@@ -83,7 +89,18 @@ fun AppNav(
         },
         bottomBar = {
             if (shouldShowBars) {
-                AppBottomBar(navController = nav, currentRoute = currentRoute)
+                AppBottomBar(
+                    currentRoute = currentRoute,
+                    onNavigateClicked = { route ->
+                        nav.navigate(route) {
+                            popUpTo(nav.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
             }
         }
     ) { innerPadding ->
@@ -95,11 +112,13 @@ fun AppNav(
             composable("home") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     HomeScreen(
-                        navController = nav,
-                        authViewModel = authViewModel,
                         onOpenCamera = { nav.navigate("camera") }
                     )
                 }
@@ -107,118 +126,216 @@ fun AppNav(
             composable("camera") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
-                    CameraScreen(navController = nav, authViewModel = authViewModel)
+                    CameraScreen(
+                        onNavigateUp = { nav.navigateUp() },
+                        authViewModel = authViewModel
+                    )
                 }
             }
             composable("gallery") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     SimpleTextScreen("Gallery (TODO)") // TODO
                 }
             }
-            composable("profile") {
+            composable("profile") { navBackStackEntry ->
+
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") { popUpTo(0) }
+                    }
                 ) {
+                    val uid = authViewModel.getUserId()
+                    var isProfileComplete by remember { mutableStateOf<Boolean?>(null) }
+                    var userName by remember { mutableStateOf("John Doe") }
+                    var userAge by remember { mutableStateOf(25) }
+                    var userWithUsAtDays by remember { mutableStateOf("30 days") }
+                    var userEmail by remember { mutableStateOf("User@gmail.com") }
+
+                    val profileUpdated = navBackStackEntry
+                        .savedStateHandle
+                        .getLiveData<Boolean>("profileUpdated")
+                        .observeAsState()
+
+                    val loadProfileData = {
+                        if (uid != null) {
+                            userRepository.checkIsProfileCompleted(uid) { isComplete ->
+                                if (isComplete) {
+                                    userRepository.getProfile(uid) { name, age, days, email ->
+                                        userName = name ?: "User"
+                                        userAge = age ?: 25
+                                        userWithUsAtDays = days ?: "0 days"
+                                        userEmail = email ?: "user@example.com"
+                                        isProfileComplete = true
+                                    }
+                                } else {
+                                    isProfileComplete = false
+                                }
+                            }
+                        } else {
+                            isProfileComplete = false
+                        }
+                    }
+
+                    LaunchedEffect(uid) {
+                        loadProfileData()
+                    }
+
+                    LaunchedEffect(profileUpdated.value) {
+                        if (profileUpdated.value == true) {
+                            loadProfileData()
+                            navBackStackEntry.savedStateHandle.set("profileUpdated", false)
+                        }
+                    }
+
                     ProfileScreen(
-                        navController = nav,
-                        authViewModel = authViewModel,
-                        userRepository = userRepository
+                        isProfileComplete = isProfileComplete,
+                        userName = userName,
+                        userAge = userAge,
+                        userWithUsAtDays = userWithUsAtDays,
+                        userEmail = userEmail,
+                        onOnboardingComplete = { name, age ->
+                            uid?.let {
+                                userRepository.saveProfile(it, name, age)
+                            }
+                            userName = name
+                            userAge = age
+                            isProfileComplete = true
+                        },
+                        onEditProfileClicked = {
+                            nav.navigate("editProfile")
+                        },
+                        onSignOutClicked = {
+                            authViewModel.signout()
+                        }
                     )
                 }
             }
             composable("editProfile") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
+                    val uid = authViewModel.getUserId()
+
+                    var initialName by remember { mutableStateOf("") }
+                    var initialAge by remember { mutableStateOf("") }
+                    var initialEmail by remember { mutableStateOf("") }
+                    var isLoading by remember { mutableStateOf(true) }
+                    var isSaving by remember { mutableStateOf(false) }
+                    var error by remember { mutableStateOf<String?>(null) }
+
+                    LaunchedEffect(uid) {
+                        if (uid != null) {
+                            userRepository.getProfile(uid) { currentName, currentAge, _, currentEmail ->
+                                initialName = currentName ?: ""
+                                initialAge = (currentAge ?: 18).toString()
+                                initialEmail = currentEmail ?: ""
+                                isLoading = false
+                            }
+                        } else {
+                            error = "User not authenticated"
+                            isLoading = false
+                        }
+                    }
+
                     EditProfileScreen(
-                        navController = nav,
-                        authViewModel = authViewModel,
-                        userRepository = userRepository
+                        initialName = initialName,
+                        initialAge = initialAge,
+                        initialEmail = initialEmail,
+                        isLoading = isLoading,
+                        isSaving = isSaving,
+                        externalError = error,
+
+                        onSaveClicked = { newName ->
+                            if (uid == null) {
+                                error = "User not authenticated"
+                                return@EditProfileScreen
+                            }
+
+                            isSaving = true
+                            error = null
+
+                            userRepository.updateName(uid, newName)
+
+                            nav.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("profileUpdated", true)
+
+                            nav.popBackStack()
+                        },
+
+                        onCancelClicked = {
+                            nav.popBackStack()
+                        }
                     )
                 }
             }
             composable("history") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     EmotionHistoryScreen(
-                        navController = nav,
                         authViewModel = authViewModel
                     )
                 }
             }
             composable("login") {
-                LoginPage(Modifier, nav, authViewModel)
+                LoginPage(
+                    Modifier,
+                    onHomeNavigate = {
+                        nav.navigate("home") {
+                            popUpTo(0)
+                        }
+                    },
+                    onSignUpNavigate = {
+                        nav.navigate("signup") {
+                            launchSingleTop = true
+                        }
+                    },
+                    authViewModel
+                )
             }
             composable("signup") {
-                SignupPage(Modifier, nav, authViewModel)
+                SignupPage(
+                    Modifier,
+                    onHomeNavigate = {
+                        nav.navigate("home") {
+                            popUpTo(0)
+                        }
+                    },
+                    onLoginNavigate = {
+                        nav.navigate("login") {
+                            popUpTo("signup") { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    authViewModel
+                )
             }
         }
     }
 }
 
-@Composable
-fun AppBottomBar(navController: NavController, currentRoute: String?) {
-    NavigationBar(
-        containerColor = Color(0xFF1A1625),
-        contentColor = Color.White
-    ) {
-        bottomNavItems.forEach { item ->
-            val isSelected = currentRoute?.let {
-                item.route == it
-            } ?: false
-
-            NavigationBarItem(
-                selected = isSelected,
-                onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                icon = {
-                    Icon(
-                        item.icon,
-                        contentDescription = item.label,
-                        tint = if (isSelected)
-                            Color(0xFF8B5CF6)
-                        else
-                            Color.White.copy(alpha = 0.6f)
-                    )
-                },
-                label = {
-                    Text(
-                        item.label,
-                        color = if (isSelected)
-                            Color(0xFF8B5CF6)
-                        else
-                            Color.White.copy(alpha = 0.6f)
-                    )
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color(0xFF8B5CF6),
-                    selectedTextColor = Color(0xFF8B5CF6),
-                    unselectedIconColor = Color.White.copy(alpha = 0.6f),
-                    unselectedTextColor = Color.White.copy(alpha = 0.6f),
-                    indicatorColor = Color(0xFF8B5CF6).copy(alpha = 0.2f)
-                )
-            )
-        }
-    }
-}
-
-@Composable
-private fun SimpleTextScreen(text: String) {
-    Text(text)
-}
