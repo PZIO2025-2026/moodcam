@@ -29,14 +29,7 @@ class ProfileViewModel(
 
         userRepository.getProfile(uid) { user ->
             if (user != null) {
-                _profileState.value = ProfileState.Loaded(
-                    user = user,
-                    name = user.name ?: "User",
-                    age = user.getCurrentAge() ?: user.userStartAge ?: 25,
-                    daysWithUs = user.getDaysWithUs(),
-                    email = user.email,
-                    isComplete = user.isProfileComplete()
-                )
+                _profileState.value = ProfileState.Loaded(user)
             } else {
                 _profileState.value = ProfileState.Error("Failed to load profile")
             }
@@ -65,13 +58,6 @@ class ProfileViewModel(
 sealed class ProfileState {
     object Loading : ProfileState()
     object Unauthenticated : ProfileState()
-    data class Loaded(
-        val user: User,
-        val name: String,
-        val age: Int,
-        val daysWithUs: String,
-        val email: String,
-        val isComplete: Boolean
-    ) : ProfileState()
+    data class Loaded(val user: User) : ProfileState()
     data class Error(val message: String) : ProfileState()
 }

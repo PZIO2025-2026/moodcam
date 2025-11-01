@@ -49,11 +49,11 @@ fun ProfileScreenContent(
         }
         is ProfileState.Loaded -> {
             ProfileScreen(
-                isProfileComplete = state.isComplete,
-                userName = state.name,
-                userAge = state.age,
-                userWithUsAtDays = state.daysWithUs,
-                userEmail = state.email,
+                isProfileComplete = state.user.isProfileComplete(),
+                userName = state.user.name ?: "User",
+                userAge = state.user.getCurrentAge() ?: state.user.userStartAge ?: 25,
+                userWithUsAtDays = state.user.getDaysWithUs(),
+                userEmail = state.user.email,
                 onOnboardingComplete = { name, age ->
                     profileViewModel.saveProfile(name, age)
                 },

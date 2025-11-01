@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.ui.profile.edit.EditProfileScreen
 import com.moodcam.frontend_android.viewmodel.ProfileViewModel
+import com.moodcam.frontend_android.viewmodel.ProfileState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -30,13 +31,13 @@ fun EditProfileScreenContent(
 
     LaunchedEffect(profileState) {
         when (val state = profileState) {
-            is com.moodcam.frontend_android.viewmodel.ProfileState.Loaded -> {
-                initialName = state.name
-                initialAge = state.age.toString()
-                initialEmail = state.email
+            is ProfileState.Loaded -> {
+                initialName = state.user.name ?: ""
+                initialAge = (state.user.getCurrentAge() ?: state.user.userStartAge ?: 25).toString()
+                initialEmail = state.user.email
                 isLoading = false
             }
-            is com.moodcam.frontend_android.viewmodel.ProfileState.Error -> {
+            is ProfileState.Error -> {
                 error = state.message
                 isLoading = false
             }
