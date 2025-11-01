@@ -13,6 +13,8 @@ fun EmotionRecordStatistics(
 ){
     val historyRepository = koinInject<EmotionHistoryRepository>()
 
+    //
+
     PremiumScreenLayout(modifier=modifier){
         // TODO : some kind of diagram here
     }

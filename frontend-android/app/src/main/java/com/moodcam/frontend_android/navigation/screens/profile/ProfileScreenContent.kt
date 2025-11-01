@@ -53,7 +53,7 @@ fun ProfileScreenContent(
     LaunchedEffect(profileUpdated.value) {
         if (profileUpdated.value == true) {
             loadProfileData()
-            navBackStackEntry.savedStateHandle.set("profileUpdated", false)
+            navBackStackEntry.savedStateHandle["profileUpdated"] = false
         }
     }
 
