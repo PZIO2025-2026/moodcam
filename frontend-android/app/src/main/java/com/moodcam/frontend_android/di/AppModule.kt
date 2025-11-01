@@ -7,7 +7,6 @@ import com.google.firebase.firestore.firestore
 import com.google.mlkit.vision.face.FaceDetector
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
-import com.moodcam.frontend_android.db.EmotionHistoryRepository
 import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.db.EmotionHistoryRepository
 import com.moodcam.frontend_android.viewmodel.EmotionClassifierViewModel
