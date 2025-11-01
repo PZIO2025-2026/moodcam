@@ -4,74 +4,68 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavBackStackEntry
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
-import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.ui.profile.ProfileScreen
+import com.moodcam.frontend_android.viewmodel.ProfileState
+import com.moodcam.frontend_android.viewmodel.ProfileViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreenContent(
-    authViewModel: AuthViewModel,
-    userRepository: UserRepository,
     navBackStackEntry: NavBackStackEntry,
     onEditProfile: () -> Unit
 ) {
-    val uid = authViewModel.getUserId()
-    var isProfileComplete by remember { mutableStateOf<Boolean?>(null) }
-    var userName by remember { mutableStateOf("User") }
-    var userAge by remember { mutableStateOf(25) }
-    var userWithUsAtDays by remember { mutableStateOf("0 days") }
-    var userEmail by remember { mutableStateOf("user@example.com") }
+    val authViewModel: AuthViewModel = koinViewModel()
+    val profileViewModel: ProfileViewModel = koinViewModel()
+    val profileState by profileViewModel.profileState.collectAsState()
 
     val profileUpdated = navBackStackEntry
         .savedStateHandle
         .getLiveData<Boolean>("profileUpdated")
         .observeAsState()
 
-    fun loadProfileData() {
-        if (uid != null) {
-            userRepository.checkIsProfileCompleted(uid) { isComplete ->
-                if (isComplete) {
-                    userRepository.getProfile(uid) { name, age, days, email ->
-                        userName = name ?: "User"
-                        userAge = age ?: 25
-                        userWithUsAtDays = days ?: "0 days"
-                        userEmail = email ?: "user@example.com"
-                        isProfileComplete = true
-                    }
-                } else {
-                    isProfileComplete = false
-                }
-            }
-        } else {
-            isProfileComplete = false
-        }
-    }
-
-    LaunchedEffect(uid) {
-        loadProfileData()
+    LaunchedEffect(Unit) {
+        profileViewModel.loadProfile()
     }
 
     LaunchedEffect(profileUpdated.value) {
         if (profileUpdated.value == true) {
-            loadProfileData()
+            profileViewModel.loadProfile()
             navBackStackEntry.savedStateHandle.set("profileUpdated", false)
         }
     }
 
-    ProfileScreen(
-        isProfileComplete = isProfileComplete,
-        userName = userName,
-        userAge = userAge,
-        userWithUsAtDays = userWithUsAtDays,
-        userEmail = userEmail,
-        onOnboardingComplete = { name, age ->
-            uid?.let {
-                userRepository.saveProfile(it, name, age)
-            }
-            userName = name
-            userAge = age
-            isProfileComplete = true
-        },
-        onEditProfileClicked = onEditProfile,
-        onSignOutClicked = { authViewModel.signout() }
-    )
+    when (val state = profileState) {
+        is ProfileState.Loading -> {
+            ProfileScreen(
+                isProfileComplete = null,
+                userName = "Loading...",
+                userAge = 0,
+                userWithUsAtDays = "...",
+                userEmail = "...",
+                onOnboardingComplete = { _, _ -> },
+                onEditProfileClicked = {},
+                onSignOutClicked = {}
+            )
+        }
+        is ProfileState.Loaded -> {
+            ProfileScreen(
+                isProfileComplete = state.isComplete,
+                userName = state.name,
+                userAge = state.age,
+                userWithUsAtDays = state.daysWithUs,
+                userEmail = state.email,
+                onOnboardingComplete = { name, age ->
+                    profileViewModel.saveProfile(name, age)
+                },
+                onEditProfileClicked = onEditProfile,
+                onSignOutClicked = { authViewModel.signout() }
+            )
+        }
+        is ProfileState.Unauthenticated -> {
+            // Handled by AuthorizedScreen
+        }
+        is ProfileState.Error -> {
+            // TODO: Show error UI
+        }
+    }
 }
