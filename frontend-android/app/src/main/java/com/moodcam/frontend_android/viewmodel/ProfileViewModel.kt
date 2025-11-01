@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.db.UserRepository
+import com.moodcam.frontend_android.db.entities.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,25 +27,18 @@ class ProfileViewModel(
 
         _profileState.value = ProfileState.Loading
 
-        userRepository.checkIsProfileCompleted(uid) { isComplete ->
-            if (isComplete) {
-                userRepository.getProfile(uid) { name, age, days, email ->
-                    _profileState.value = ProfileState.Loaded(
-                        name = name ?: "User",
-                        age = age ?: 25,
-                        daysWithUs = days ?: "0 days",
-                        email = email ?: "user@example.com",
-                        isComplete = true
-                    )
-                }
-            } else {
+        userRepository.getProfile(uid) { user ->
+            if (user != null) {
                 _profileState.value = ProfileState.Loaded(
-                    name = "User",
-                    age = 25,
-                    daysWithUs = "0 days",
-                    email = "user@example.com",
-                    isComplete = false
+                    user = user,
+                    name = user.name ?: "User",
+                    age = user.getCurrentAge() ?: user.userStartAge ?: 25,
+                    daysWithUs = user.getDaysWithUs(),
+                    email = user.email,
+                    isComplete = user.isProfileComplete()
                 )
+            } else {
+                _profileState.value = ProfileState.Error("Failed to load profile")
             }
         }
     }
@@ -72,6 +66,7 @@ sealed class ProfileState {
     object Loading : ProfileState()
     object Unauthenticated : ProfileState()
     data class Loaded(
+        val user: User,
         val name: String,
         val age: Int,
         val daysWithUs: String,
