@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
+import com.moodcam.frontend_android.db.EmotionHistoryRepository
 import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.viewmodel.EmotionClassifierViewModel
 import com.moodcam.frontend_android.helpers.loadModelFile
