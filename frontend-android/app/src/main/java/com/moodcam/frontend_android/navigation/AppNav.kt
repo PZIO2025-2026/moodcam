@@ -8,8 +8,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.moodcam.frontend_android.auth.vm.AuthViewModel
-import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.navigation.components.AppBottomBar
 import com.moodcam.frontend_android.navigation.components.AppTopBar
 import com.moodcam.frontend_android.navigation.helpers.navigateToBottomNavDestination
@@ -22,9 +20,7 @@ import com.moodcam.frontend_android.navigation.screens.profile.profileRoute
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNav(
-    modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel,
-    userRepository: UserRepository
+    modifier: Modifier = Modifier
 ) {
     val nav = rememberNavController()
     val navBackStackEntry by nav.currentBackStackEntryAsState()
@@ -50,18 +46,18 @@ fun AppNav(
             modifier = Modifier.padding(innerPadding)
         ) {
             // Auth routes
-            loginRoute(nav, authViewModel)
-            signupRoute(nav, authViewModel)
+            loginRoute(nav)
+            signupRoute(nav)
             
             // Main routes
-            homeRoute(nav, authViewModel)
-            cameraRoute(nav, authViewModel)
-            galleryRoute(nav, authViewModel)
-            historyRoute(nav, authViewModel)
+            homeRoute(nav)
+            cameraRoute(nav)
+            galleryRoute(nav)
+            historyRoute(nav)
             
             // Profile routes
-            profileRoute(nav, authViewModel, userRepository)
-            editProfileRoute(nav, authViewModel, userRepository)
+            profileRoute(nav)
+            editProfileRoute(nav)
         }
     }
 }

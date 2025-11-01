@@ -9,6 +9,7 @@ import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.db.EmotionHistoryRepository
 import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.viewmodel.EmotionClassifierViewModel
+import com.moodcam.frontend_android.viewmodel.ProfileViewModel
 import com.moodcam.frontend_android.helpers.loadModelFile
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -37,4 +38,5 @@ val appModule = module {
     // ViewModels
     viewModelOf(::AuthViewModel)
     viewModelOf(::EmotionClassifierViewModel)
+    viewModelOf(::ProfileViewModel)
 }
