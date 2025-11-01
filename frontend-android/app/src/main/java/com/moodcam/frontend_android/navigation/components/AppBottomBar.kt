@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -19,6 +20,7 @@ val bottomNavItems = listOf(
     BottomNavItem("Home", Icons.Default.Home, Routes.HOME),
     BottomNavItem("History", Icons.Default.List, Routes.HISTORY),
     BottomNavItem("Gallery", Icons.Default.PhotoLibrary, Routes.GALLERY),
+    BottomNavItem("Statistics", Icons.Default.PieChart, Routes.STATISTICS),
     BottomNavItem("Profile", Icons.Default.AccountCircle, Routes.PROFILE)
 )
 

@@ -39,7 +39,7 @@ fun EmotionHistoryScreen(
 
     fun refresh() {
         if (uid != null) {
-            historyRepository.getRecent(uid, 50) { list ->
+            historyRepository.getRecent(uid,null, 50) { list ->
                 records = list
                 loading = false
             }

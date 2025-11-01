@@ -115,8 +115,4 @@ dependencies {
     val koinVersion = "3.5.3"
     implementation("io.insert-koin:koin-android:${koinVersion}")
     implementation("io.insert-koin:koin-androidx-compose:${koinVersion}")
-
-    // Vico charts
-    implementation(libs.vico.compose)
-    implementation(libs.vico.compose.m3)
 }

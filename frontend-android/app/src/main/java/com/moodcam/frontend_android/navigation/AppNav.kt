@@ -54,6 +54,7 @@ fun AppNav(
             cameraRoute(nav)
             galleryRoute(nav)
             historyRoute(nav)
+            statisticsRoute(nav)
             
             // Profile routes
             profileRoute(nav)

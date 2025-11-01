@@ -3,6 +3,7 @@ package com.moodcam.frontend_android.db
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.moodcam.frontend_android.db.entities.EmotionRecord
+import java.util.Date
 
 
 class EmotionHistoryRepository(private val db: FirebaseFirestore) {
@@ -19,10 +20,11 @@ class EmotionHistoryRepository(private val db: FirebaseFirestore) {
             .addOnFailureListener { e -> onError?.invoke(e) }
     }
 
-    fun getRecent(uid: String, limit: Long = 50, onResult: (List<EmotionRecord>) -> Unit) {
+    fun getRecent(uid: String, anchorDate: Date?, limit: Long = 50, onResult: (List<EmotionRecord>) -> Unit) {
         db.collection("users").document(uid)
             .collection("emotions")
             .orderBy("createdAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .whereLessThan("createdAt", anchorDate ?: Timestamp.now())
             .limit(limit)
             .get()
             .addOnSuccessListener { snap ->
