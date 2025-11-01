@@ -95,7 +95,11 @@ fun AppNav(
             composable("home") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     HomeScreen(
                         navController = nav,
@@ -107,7 +111,11 @@ fun AppNav(
             composable("camera") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     CameraScreen(navController = nav, authViewModel = authViewModel)
                 }
@@ -115,7 +123,11 @@ fun AppNav(
             composable("gallery") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     SimpleTextScreen("Gallery (TODO)") // TODO
                 }
@@ -123,7 +135,11 @@ fun AppNav(
             composable("profile") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     ProfileScreen(
                         navController = nav,
@@ -135,7 +151,11 @@ fun AppNav(
             composable("editProfile") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     EditProfileScreen(
                         navController = nav,
@@ -147,10 +167,13 @@ fun AppNav(
             composable("history") {
                 AuthorizedScreenLayout(
                     authViewModel = authViewModel,
-                    navController = nav
+                    onUnauthorized = {
+                        nav.navigate("login") {
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     EmotionHistoryScreen(
-                        navController = nav,
                         authViewModel = authViewModel
                     )
                 }
