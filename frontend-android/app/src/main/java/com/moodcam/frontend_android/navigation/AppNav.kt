@@ -177,6 +177,8 @@ fun AppNav(
                                     userRepository.getProfile(uid) { name, age, days, email ->
                                         userName = name ?: "User"
                                         userAge = age ?: 25
+                                        userWithUsAtDays = days ?: "0 days"
+                                        userEmail = email ?: "user@example.com"
                                         isProfileComplete = true
                                     }
                                 } else {
