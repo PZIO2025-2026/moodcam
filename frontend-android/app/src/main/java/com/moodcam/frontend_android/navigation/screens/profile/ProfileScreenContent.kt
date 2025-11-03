@@ -12,7 +12,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ProfileScreenContent(
     navBackStackEntry: NavBackStackEntry,
-    onEditProfile: () -> Unit
+    onEditProfile: () -> Unit,
+    onSettingsClicked: () -> Unit
 ) {
     val authViewModel: AuthViewModel = koinViewModel()
     val profileViewModel: ProfileViewModel = koinViewModel()
@@ -44,7 +45,8 @@ fun ProfileScreenContent(
                 userEmail = "...",
                 onOnboardingComplete = { _, _ -> },
                 onEditProfileClicked = {},
-                onSignOutClicked = {}
+                onSignOutClicked = {},
+                onSettingsClicked = {}
             )
         }
         is ProfileState.Loaded -> {
@@ -58,7 +60,8 @@ fun ProfileScreenContent(
                     profileViewModel.saveProfile(name, age)
                 },
                 onEditProfileClicked = onEditProfile,
-                onSignOutClicked = { authViewModel.signout() }
+                onSignOutClicked = { authViewModel.signout() },
+                onSettingsClicked = onSettingsClicked
             )
         }
         is ProfileState.Unauthenticated -> {

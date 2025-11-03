@@ -16,6 +16,7 @@ import com.moodcam.frontend_android.navigation.screens.auth.signupRoute
 import com.moodcam.frontend_android.navigation.screens.main.*
 import com.moodcam.frontend_android.navigation.screens.profile.editProfileRoute
 import com.moodcam.frontend_android.navigation.screens.profile.profileRoute
+import com.moodcam.frontend_android.navigation.screens.profile.settingsRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +31,7 @@ fun AppNav(
     Scaffold(
         modifier = modifier,
         containerColor = Color(0xFF0F0C29),
-        topBar = { if (shouldShowBars) AppTopBar() },
+    topBar = { if (shouldShowBars) AppTopBar(nav, currentRoute) },
         bottomBar = { 
             if (shouldShowBars) {
                 AppBottomBar(
@@ -59,6 +60,8 @@ fun AppNav(
             // Profile routes
             profileRoute(nav)
             editProfileRoute(nav)
+            // Settings
+            settingsRoute(nav)
         }
     }
 }
