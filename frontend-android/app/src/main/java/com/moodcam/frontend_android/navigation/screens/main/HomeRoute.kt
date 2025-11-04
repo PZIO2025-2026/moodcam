@@ -14,7 +14,10 @@ fun NavGraphBuilder.homeRoute(nav: NavHostController) {
         val authViewModel: AuthViewModel = koinViewModel()
         
         AuthorizedScreen(authViewModel, nav) {
-            HomeScreen(onOpenCamera = { nav.navigate(Routes.CAMERA) })
+            HomeScreen(
+                onOpenCamera = { nav.navigate(Routes.CAMERA) },
+                authViewModel = authViewModel
+            )
         }
     }
 }

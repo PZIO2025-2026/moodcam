@@ -15,7 +15,6 @@ fun NavGraphBuilder.cameraRoute(nav: NavHostController) {
         
         AuthorizedScreen(authViewModel, nav) {
             CameraScreen(
-                onNavigateUp = { nav.navigateUp() },
                 authViewModel = authViewModel
             )
         }

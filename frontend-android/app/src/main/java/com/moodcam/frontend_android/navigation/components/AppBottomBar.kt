@@ -2,6 +2,7 @@ package com.moodcam.frontend_android.navigation.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PhotoLibrary
@@ -18,9 +19,10 @@ import com.moodcam.frontend_android.ui.components.BottomNavItem
 
 val bottomNavItems = listOf(
     BottomNavItem("Home", Icons.Default.Home, Routes.HOME),
-    BottomNavItem("History", Icons.Default.List, Routes.HISTORY),
-    BottomNavItem("Gallery", Icons.Default.PhotoLibrary, Routes.GALLERY),
+    //BottomNavItem("History", Icons.Default.List, Routes.HISTORY),
+    //BottomNavItem("Gallery", Icons.Default.PhotoLibrary, Routes.GALLERY),
     BottomNavItem("Statistics", Icons.Default.PieChart, Routes.STATISTICS),
+    BottomNavItem("Camera", Icons.Default.CameraAlt, Routes.CAMERA),
     BottomNavItem("Profile", Icons.Default.AccountCircle, Routes.PROFILE)
 )
 
