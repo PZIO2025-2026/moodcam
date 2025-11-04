@@ -16,7 +16,7 @@ import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    onNavigateUp: () -> Unit
 ) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
@@ -63,12 +63,12 @@ fun SettingsScreen(
                         .apply()
 
                     Toast.makeText(context, "Settings saved", Toast.LENGTH_SHORT).show()
-                    navController.navigateUp()
+                    onNavigateUp()
                 }, modifier = Modifier.weight(1f)) {
                     Text("Save")
                 }
 
-                OutlinedButton(onClick = { navController.navigateUp() }, modifier = Modifier.weight(1f)) {
+                OutlinedButton(onClick = { onNavigateUp() }, modifier = Modifier.weight(1f)) {
                     Text("Close")
                 }
             }

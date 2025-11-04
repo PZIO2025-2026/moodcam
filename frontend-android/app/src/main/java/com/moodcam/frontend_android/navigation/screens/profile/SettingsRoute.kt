@@ -14,7 +14,11 @@ fun NavGraphBuilder.settingsRoute(nav: NavHostController) {
         val authViewModel: AuthViewModel = koinViewModel()
 
         AuthorizedScreen(authViewModel, nav) {
-            SettingsScreen(navController = nav)
+            SettingsScreen(
+                onNavigateUp = {
+                    nav.navigateUp()
+                }
+            )
         }
     }
 }
