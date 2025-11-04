@@ -11,13 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlin.math.cos
-import kotlin.math.sin
 
 /**
  * Simple and beautiful Pie Chart for emotions using Compose Canvas
@@ -25,8 +22,7 @@ import kotlin.math.sin
 @Composable
 fun EmotionPieChart(
     data: Map<String, Int>,
-    modifier: Modifier = Modifier,
-    config: ChartConfig = ChartConfig()
+    modifier: Modifier = Modifier
 ) {
     if (data.isEmpty()) {
         Box(
