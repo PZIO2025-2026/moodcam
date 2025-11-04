@@ -7,6 +7,8 @@ object Routes {
     const val CAMERA = "camera"
     const val PROFILE = "profile"
     const val EDIT_PROFILE = "editProfile"
+    const val SETTINGS = "settings"
+    const val HISTORY = "history"
     const val STATISTICS = "statistics"
     
     val FULL_SCREEN_ROUTES = listOf(LOGIN, SIGNUP)

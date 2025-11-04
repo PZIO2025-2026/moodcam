@@ -39,7 +39,8 @@ fun ProfileScreen(
 
     onOnboardingComplete: (name: String, age: Int) -> Unit,
     onEditProfileClicked: () -> Unit,
-    onSignOutClicked: () -> Unit
+    onSignOutClicked: () -> Unit,
+    onSettingsClicked: () -> Unit = {}
 ) {
     if (isProfileComplete == null) {
         PremiumScreenLayout(modifier = modifier) {
@@ -65,7 +66,8 @@ fun ProfileScreen(
             userWithUsAtDays = userWithUsAtDays,
 
             onEditProfileClicked = onEditProfileClicked,
-            onSignOutClicked = onSignOutClicked
+            onSignOutClicked = onSignOutClicked,
+            onSettingsClicked = onSettingsClicked
         )
     }
 }
