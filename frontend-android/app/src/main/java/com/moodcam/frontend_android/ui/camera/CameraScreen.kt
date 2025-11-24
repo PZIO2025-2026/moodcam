@@ -1,3 +1,5 @@
+/** Main camera screen handling permission flow and showing detection UI. */
+
 @file:OptIn(ExperimentalPermissionsApi::class)
 package com.moodcam.frontend_android.ui.camera
 
@@ -15,8 +17,10 @@ import com.moodcam.frontend_android.viewmodel.EmotionClassifierViewModel
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * Main camera screen for emotion detection
- * Handles permission flow and delegates to appropriate screen
+ * Chooses between camera content, rationale or permission request based on state.
+ * @param authViewModel Auth view model.
+ * @param classifierViewModel Emotion classifier view model.
+ * @param historyRepository Repository for persisting emotions.
  */
 @Composable
 fun CameraScreen(

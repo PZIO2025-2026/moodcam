@@ -5,6 +5,8 @@ plugins {
 
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 android {

@@ -1,0 +1,25 @@
+var video__capture__test_8py =
+[
+    [ "_", "video__capture__test_8py.html#ad3ecccb4dcb60918da4488f68bd50fa0", null ],
+    [ "bboxC", "video__capture__test_8py.html#ac73861f357e9f4c7221936d35857ce94", null ],
+    [ "cap", "video__capture__test_8py.html#a26617c9e6d46ba490defdbcfb9fa7c8c", null ],
+    [ "emotion_string", "video__capture__test_8py.html#a5f5923a36209787ccd375c15263e83f2", null ],
+    [ "face_detection", "video__capture__test_8py.html#a057bc50b1cc524f4e32280f7f1f27969", null ],
+    [ "frame", "video__capture__test_8py.html#a1b7229f703b43f8f41d886c7673da692", null ],
+    [ "frame_count", "video__capture__test_8py.html#ab09c947f5cb3bb8c5ac0257522d5cbff", null ],
+    [ "frame_rgb", "video__capture__test_8py.html#ad344eb73437714fd5c4e71f1bf3deec5", null ],
+    [ "h", "video__capture__test_8py.html#a9de927f821f94477eac5b3facc40b250", null ],
+    [ "h_box", "video__capture__test_8py.html#a6bb94eff7f66bd138a4b25d9dbd0b127", null ],
+    [ "input_details", "video__capture__test_8py.html#a79b75e05697032f176e9928129ce82d4", null ],
+    [ "interpreter", "video__capture__test_8py.html#a18fad766fc52a06f54d1a3c13ac10d46", null ],
+    [ "last_emotion", "video__capture__test_8py.html#ae260828ebf5fae49b9b711301e010e3a", null ],
+    [ "mp_drawing", "video__capture__test_8py.html#a17316283dbe89454c97c85f8ce1c8fe7", null ],
+    [ "mp_face_detection", "video__capture__test_8py.html#a6cade0b9639af1aadd05a6dc4ad1e5be", null ],
+    [ "output_details", "video__capture__test_8py.html#aecc9c4a91c1eb85135dee7236bc44a66", null ],
+    [ "results", "video__capture__test_8py.html#ae6b825029c5371a135352f825fcdc1d9", null ],
+    [ "ret", "video__capture__test_8py.html#a049b03818893c71e3290e467bbeb0eab", null ],
+    [ "w", "video__capture__test_8py.html#ad30f98b93f18d4ce2aaa23260d852927", null ],
+    [ "w_box", "video__capture__test_8py.html#af23ca476440ba0d95e7724d96cf552b9", null ],
+    [ "x", "video__capture__test_8py.html#af12b5e6fe9c2ad1bbf1d095731c181f6", null ],
+    [ "y", "video__capture__test_8py.html#ae41b898a36796f7204ada43f7fa84e22", null ]
+];

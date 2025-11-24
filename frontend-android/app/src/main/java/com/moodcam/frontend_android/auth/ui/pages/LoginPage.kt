@@ -1,3 +1,7 @@
+/**
+ * @file LoginPage.kt
+ * @brief Composable implementing email/password login UI and handling auth state transitions.
+ */
 package com.moodcam.frontend_android.auth.ui.pages
 
 import android.widget.Toast
@@ -26,6 +30,20 @@ import androidx.navigation.NavController
 import com.moodcam.frontend_android.auth.vm.AuthState
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
+
+/**
+ * Login screen composable with:
+ * - Email & password fields
+ * - Password visibility toggle
+ * - Error toast feedback
+ * - Navigation to signup
+ * - Automatic navigation to home on successful authentication.
+ *
+ * @param modifier Optional root modifier.
+ * @param onHomeNavigate Invoked after successful login.
+ * @param onSignUpNavigate Invoked to show signup screen.
+ * @param authViewModel Authentication ViewModel.
+ */
 @Composable
 fun LoginPage(
     modifier: Modifier = Modifier,

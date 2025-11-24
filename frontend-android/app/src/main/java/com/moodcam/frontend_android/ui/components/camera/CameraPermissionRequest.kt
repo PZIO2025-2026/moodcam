@@ -1,3 +1,5 @@
+/** Initial camera permission request screen. */
+
 package com.moodcam.frontend_android.ui.components.camera
 
 import androidx.compose.foundation.background
@@ -19,7 +21,10 @@ import androidx.compose.ui.unit.sp
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 
 /**
- * Displays initial camera permission request screen
+ * Initial permission request screen prompting the user to grant camera access.
+ *
+ * @param onRequestPermission Callback to trigger permission launcher.
+ * @param modifier Optional modifier for root layout.
  */
 @Composable
 fun CameraPermissionRequest(

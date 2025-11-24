@@ -1,3 +1,4 @@
+/** CameraX preview composable with image analysis pipeline. */
 
 package com.moodcam.frontend_android.ui.components.camera
 
@@ -24,6 +25,15 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 
+/** CameraX integration composable. */
+
+/** Camera preview + latest-frame analysis.
+ * @param modifier Optional modifier.
+ * @param lifecycleOwner Lifecycle owner.
+ * @param context Android context.
+ * @param onAnalyzeImage Callback per analyzed frame.
+ * @param cameraSelector Front/back selector (optional).
+ */
 @Composable
 fun CameraView(
     modifier: Modifier = Modifier,

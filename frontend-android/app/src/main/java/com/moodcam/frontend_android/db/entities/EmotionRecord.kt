@@ -1,3 +1,4 @@
+/** Single emotion detection event stored under a user's `emotions` subcollection. */
 package com.moodcam.frontend_android.db.entities
 
 import com.google.firebase.Timestamp

@@ -23,6 +23,12 @@ import com.moodcam.frontend_android.ui.components.stats.RecentEmotionsCard
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 import org.koin.androidx.compose.koinViewModel
 
+/** Home dashboard displaying branding, stats and recent emotion detections.
+ * First authenticated landing screen.
+ * @param modifier optional root modifier.
+ * @param onOpenCamera navigate to camera callback.
+ * @param authViewModel auth view model.
+ */
 @Composable
 fun HomeScreen(
 	modifier: Modifier = Modifier,

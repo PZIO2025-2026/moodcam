@@ -1,3 +1,4 @@
+/** Single-activity entry point configuring splash, OpenCV, DI and navigation. */
 package com.moodcam.frontend_android
 
 import android.os.Bundle
@@ -13,7 +14,9 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.opencv.android.OpenCVLoader
 
+/** Main application activity wiring OpenCV, Koin and Compose navigation. */
 class MainActivity : ComponentActivity() {
+    /** Activity initialization sequence. */
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         

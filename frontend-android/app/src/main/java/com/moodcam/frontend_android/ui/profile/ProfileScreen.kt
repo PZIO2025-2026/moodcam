@@ -1,3 +1,5 @@
+/** Profile screen that switches between onboarding, loading or filled profile. */
+
 package com.moodcam.frontend_android.ui.profile
 
 import androidx.compose.foundation.background
@@ -27,6 +29,19 @@ import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 import com.moodcam.frontend_android.ui.profile.onboarding.ProfileOnboardingFlow
 
+/**
+ * Decides which profile UI to render based on completion state.
+ * @param modifier Optional modifier.
+ * @param isProfileComplete Null (loading), false (onboarding), true (filled).
+ * @param userName Display name.
+ * @param userAge Age value.
+ * @param userWithUsAtDays Account age string.
+ * @param userEmail Email address.
+ * @param onOnboardingComplete Called after onboarding finishes.
+ * @param onEditProfileClicked Edit profile action.
+ * @param onSignOutClicked Sign out action.
+ * @param onSettingsClicked Settings action.
+ */
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,

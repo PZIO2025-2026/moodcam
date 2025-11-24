@@ -3,9 +3,11 @@ package com.moodcam.frontend_android.helpers.date
 import java.util.Calendar
 import java.util.Date
 
+/** Date utilities for computing a week's start/end range. */
 
-/**
- * Calculate week start and end dates based on weeks ago
+/** Calculates start (00:00:00) and end (23:59:59) dates of a week N weeks ago.
+ * @param weeksAgo 0 = current week, 1 = last week, etc.
+ * @return Pair of (weekStart, weekEnd).
  */
 fun calculateWeekRange(weeksAgo: Int): Pair<Date, Date> {
     val calendar = Calendar.getInstance().apply {

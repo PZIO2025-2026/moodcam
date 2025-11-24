@@ -1,3 +1,4 @@
+/** Firestore-backed user profile entity with helper methods for derived metrics and conversions. */
 package com.moodcam.frontend_android.db.entities
 
 import com.google.firebase.Timestamp
@@ -12,6 +13,7 @@ data class User(
     val createdAt: Timestamp = Timestamp.now()
 ) {
 
+    /** @return formatted number of days since account creation (e.g. "42 days"). */
     fun getDaysWithUs(): String {
         val now = System.currentTimeMillis()
         val createdMillis = createdAt.toDate().time
@@ -20,6 +22,9 @@ data class User(
         return "$days days"
     }
 
+    /** Computes current age by adding elapsed full years to starting age (uses 365.25 days/year).
+     * @return current age or null if starting age absent.
+     */
     fun getCurrentAge(): Int? {
         if (userStartAge == null) return null
         
@@ -32,10 +37,12 @@ data class User(
         return userStartAge + yearsPassedInt
     }
 
+    /** @return true if both name and starting age are set. */
     fun isProfileComplete(): Boolean {
         return name != null && userStartAge != null
     }
 
+    /** @return map representation for Firestore storage. */
     fun toMap(): Map<String, Any?> {
         return mapOf(
             "id" to id,
@@ -48,6 +55,9 @@ data class User(
     }
 
     companion object {
+        /** Creates user from Firestore document snapshot.
+         * @param document snapshot.
+         */
         fun fromDocument(document: DocumentSnapshot): User? {
             return document.toObject(User::class.java)
         }

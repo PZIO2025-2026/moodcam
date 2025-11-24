@@ -1,3 +1,5 @@
+/** Legend list for emotion pie chart percentages. */
+
 package com.moodcam.frontend_android.ui.components.charts
 
 import androidx.compose.foundation.Canvas

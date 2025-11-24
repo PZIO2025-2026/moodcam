@@ -1,3 +1,5 @@
+/** Button to toggle between front and back camera. */
+
 package com.moodcam.frontend_android.ui.components.camera
 
 import androidx.compose.foundation.background
@@ -17,7 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 /**
- * Button to switch between front and back camera
+ * Button toggling front/back camera selection.
+ *
+ * @param onClick Callback invoked to request camera switch.
+ * @param modifier Optional modifier for button size/position.
  */
 @Composable
 fun SwitchCameraButton(

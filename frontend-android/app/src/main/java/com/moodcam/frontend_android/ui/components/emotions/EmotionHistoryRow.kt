@@ -1,3 +1,5 @@
+/** Row displaying a single historical emotion record. */
+
 package com.moodcam.frontend_android.ui.components.emotions
 
 import androidx.compose.foundation.background

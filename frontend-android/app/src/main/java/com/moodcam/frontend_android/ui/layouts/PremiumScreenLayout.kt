@@ -1,3 +1,5 @@
+/** Animated premium gradient background layout with blurred accents. */
+
 package com.moodcam.frontend_android.ui.layouts
 
 import androidx.compose.animation.core.*
@@ -21,6 +23,13 @@ fun PremiumScreenLayout(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    /**
+     * Animated gradient background wrapper with decorative blurred blobs.
+     * Provides centered column content area.
+     *
+     * @param modifier Optional outer modifier.
+     * @param content Content lambda rendered in a centered column.
+     */
     val infiniteTransition = rememberInfiniteTransition(label = "gradient")
     val animatedOffset by infiniteTransition.animateFloat(
         initialValue = 0f,

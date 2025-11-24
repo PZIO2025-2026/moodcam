@@ -1,3 +1,8 @@
+/**
+ * @file PasswordAuthField.kt
+ * @brief Password input field component with visibility toggle
+ */
+
 package com.moodcam.frontend_android.auth.ui.elements
 
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +23,14 @@ fun PasswordAuthField(
     modifier: Modifier = Modifier,
     label: String = "Password"
 ) {
+    /**
+     * Password input field (obscured) with configurable label.
+     *
+     * @param value Current password value.
+     * @param onValueChange Callback invoked when value changes.
+     * @param modifier Optional modifier applied to the field.
+     * @param label Field label text (default "Password").
+     */
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,

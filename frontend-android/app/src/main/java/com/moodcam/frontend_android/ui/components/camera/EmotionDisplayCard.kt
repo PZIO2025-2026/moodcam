@@ -1,3 +1,5 @@
+/** Displays the current detected emotion in a stylized card. */
+
 package com.moodcam.frontend_android.ui.components.camera
 
 import androidx.compose.foundation.background
@@ -16,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 /**
- * Displays the current detected emotion with styled card
+ * Card showing the current emotion with color-coded styling.
+ * @param emotion Detected emotion label.
+ * @param modifier Optional modifier.
  */
 @Composable
 fun EmotionDisplayCard(
@@ -63,9 +67,7 @@ fun EmotionDisplayCard(
     }
 }
 
-/**
- * Maps emotion names to their display colors
- */
+/** Returns a display color for an emotion label. */
 private fun getEmotionColor(emotion: String): Color {
     return when (emotion) {
         "Happy" -> Color(0xFFFFD700)

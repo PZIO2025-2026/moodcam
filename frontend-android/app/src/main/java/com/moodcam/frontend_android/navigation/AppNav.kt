@@ -18,6 +18,10 @@ import com.moodcam.frontend_android.navigation.screens.profile.editProfileRoute
 import com.moodcam.frontend_android.navigation.screens.profile.profileRoute
 import com.moodcam.frontend_android.navigation.screens.profile.settingsRoute
 
+/** Root navigation composable configuring auth, main and profile graphs while
+ * conditionally showing top/bottom bars (hidden on full-screen routes).
+ * @param modifier optional root modifier.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNav(

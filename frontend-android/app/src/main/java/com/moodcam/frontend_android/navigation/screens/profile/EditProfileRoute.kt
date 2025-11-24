@@ -1,3 +1,5 @@
+/** Registers the edit profile route and handles save callbacks. */
+
 package com.moodcam.frontend_android.navigation.screens.profile
 
 import androidx.navigation.NavGraphBuilder
@@ -9,6 +11,12 @@ import com.moodcam.frontend_android.navigation.helpers.AuthorizedScreen
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.editProfileRoute(nav: NavHostController) {
+    /**
+     * Registers the edit profile screen route.
+     * On save, sets a flag in previous back stack entry to refresh profile.
+     *
+     * @param nav Host controller used for navigation actions.
+     */
     composable(Routes.EDIT_PROFILE) {
         val authViewModel: AuthViewModel = koinViewModel()
         

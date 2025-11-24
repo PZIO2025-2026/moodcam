@@ -1,3 +1,5 @@
+/** Navigation extension helpers for common route transitions. */
+
 package com.moodcam.frontend_android.navigation.helpers
 
 import androidx.navigation.NavGraph.Companion.findStartDestination

@@ -1,3 +1,7 @@
+/** Floating action button used to persist current detected emotion.
+ * Disabled while detecting or when no face.
+ */
+
 package com.moodcam.frontend_android.ui.components.camera
 
 import androidx.compose.foundation.background
@@ -16,8 +20,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-/**
- * Circular button to save the current emotion
+/** @param onClick save callback.
+ * @param isEnabled true when emotion can be saved.
+ * @param modifier optional modifier.
  */
 @Composable
 fun SaveEmotionButton(

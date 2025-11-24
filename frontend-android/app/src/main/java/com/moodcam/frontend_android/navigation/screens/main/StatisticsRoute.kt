@@ -1,3 +1,5 @@
+/** Registers the statistics route (auth required). */
+
 package com.moodcam.frontend_android.navigation.screens.main
 
 import androidx.navigation.NavGraphBuilder
@@ -10,6 +12,12 @@ import com.moodcam.frontend_android.ui.statistics.EmotionRecordStatistics
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.statisticsRoute(nav: NavHostController) {
+    /**
+     * Registers the statistics screen route used to display aggregated emotion data.
+     * Requires authentication.
+     *
+     * @param nav Host controller used for navigation actions.
+     */
     composable(Routes.STATISTICS) {
         val authViewModel: AuthViewModel = koinViewModel()
 

@@ -1,3 +1,5 @@
+/** Onboarding step allowing the user to pick their age. */
+
 package com.moodcam.frontend_android.ui.profile.onboarding
 
 import androidx.compose.foundation.background
@@ -17,6 +19,9 @@ import androidx.compose.ui.unit.sp
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 import kotlin.math.roundToInt
 
+/** Age selection with slider and large preview.
+ * @param onNextClick Callback with chosen age.
+ */
 @Composable
 fun AgeSelectionScreen(
     onNextClick: (Int) -> Unit

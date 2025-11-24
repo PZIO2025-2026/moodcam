@@ -1,3 +1,5 @@
+/** Profile details layout for a fully onboarded user. */
+
 package com.moodcam.frontend_android.ui.profile
 
 import androidx.compose.foundation.background

@@ -1,3 +1,5 @@
+/** First onboarding step displaying branding and a start button. */
+
 package com.moodcam.frontend_android.ui.profile.onboarding
 
 import androidx.compose.foundation.background
@@ -16,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 
+/** Welcome screen with branding and a continue action.
+ * @param onNextClick Proceed callback.
+ */
 @Composable
 fun WelcomeOnboardingScreen(
     onNextClick: () -> Unit

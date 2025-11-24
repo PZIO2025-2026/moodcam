@@ -1,3 +1,5 @@
+/** Registers the profile route (auth protected). */
+
 package com.moodcam.frontend_android.navigation.screens.profile
 
 import androidx.navigation.NavGraphBuilder
@@ -10,6 +12,12 @@ import com.moodcam.frontend_android.navigation.screens.profile.settingsRoute
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.profileRoute(nav: NavHostController) {
+    /**
+     * Registers the profile screen route.
+     * Provides callbacks for navigating to edit profile and settings.
+     *
+     * @param nav Host controller used for navigation actions.
+     */
     composable(Routes.PROFILE) { navBackStackEntry ->
         val authViewModel: AuthViewModel = koinViewModel()
         

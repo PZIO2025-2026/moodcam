@@ -1,3 +1,5 @@
+/** Wrapper loading state for edit profile screen and wiring callbacks. */
+
 package com.moodcam.frontend_android.navigation.screens.profile
 
 import androidx.compose.runtime.*
@@ -12,6 +14,13 @@ fun EditProfileScreenContent(
     onSaveComplete: () -> Unit,
     onCancel: () -> Unit
 ) {
+    /**
+     * Composable wrapper for the edit profile UI. Loads initial user data and
+     * orchestrates save/update interactions.
+     *
+     * @param onSaveComplete Callback invoked after a successful save and navigation pop.
+     * @param onCancel Callback invoked when user cancels editing.
+     */
     val authViewModel: AuthViewModel = koinViewModel()
     val profileViewModel: ProfileViewModel = koinViewModel()
     

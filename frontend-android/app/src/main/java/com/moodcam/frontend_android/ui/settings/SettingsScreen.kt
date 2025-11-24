@@ -1,3 +1,5 @@
+/** Application settings screen with simple preference toggles. */
+
 package com.moodcam.frontend_android.ui.settings
 
 import android.content.Context
@@ -13,6 +15,10 @@ import androidx.navigation.NavHostController
 import androidx.compose.ui.unit.dp
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 
+/** Settings surface with sound, notification and sensitivity toggles.
+ * @param modifier Optional modifier.
+ * @param onNavigateUp Navigate back callback.
+ */
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,

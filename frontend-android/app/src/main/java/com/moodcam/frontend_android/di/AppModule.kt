@@ -1,3 +1,4 @@
+/** Koin module declaring application-wide dependencies: Firebase services, repositories, ViewModels and TensorFlow Lite interpreter. */
 package com.moodcam.frontend_android.di
 
 import android.content.Context
@@ -17,25 +18,26 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.tensorflow.lite.Interpreter
 
+
 val appModule = module {
-    // TensorFlow Lite Interpreter
+    /** TensorFlow Lite Interpreter singleton loaded from assets. */
     single {
         val context = get<Context>()
         val buffer = loadModelFile(context, "emotion_model.tflite")
         Interpreter(buffer)
     }
 
-    // Firebase Auth
+    /** Firebase Authentication singleton. */
     single<FirebaseAuth> { FirebaseAuth.getInstance() }
 
-    // Firebase Firestore
+    /** Firebase Firestore singleton. */
     single<FirebaseFirestore> { Firebase.firestore }
 
-    // Repositories
+    /** Repository singletons (user profiles & emotion history). */
     singleOf(::UserRepository)
     singleOf(::EmotionHistoryRepository)
 
-    // ViewModels
+    /** ViewModel definitions for auth, emotion classification and profiles. */
     viewModelOf(::AuthViewModel)
     viewModelOf(::EmotionClassifierViewModel)
     viewModelOf(::ProfileViewModel)

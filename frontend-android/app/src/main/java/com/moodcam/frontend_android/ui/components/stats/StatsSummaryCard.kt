@@ -1,3 +1,5 @@
+/** Summary statistics card showing total, most and least common emotions. */
+
 package com.moodcam.frontend_android.ui.components.stats
 
 import androidx.compose.foundation.background
@@ -24,6 +26,12 @@ fun StatsSummaryCard(
     emotionCounts: Map<String, Int>,
     modifier: Modifier = Modifier
 ) {
+    /**
+     * Displays a horizontal summary of emotion statistics.
+     *
+     * @param emotionCounts Map of emotion label to count used to compute total, most and least common.
+     * @param modifier Optional modifier for layout or styling.
+     */
     val total = emotionCounts.values.sum()
     val mostCommon = emotionCounts.maxByOrNull { it.value }
     val leastCommon = emotionCounts.minByOrNull { it.value }
@@ -80,6 +88,13 @@ private fun StatItem(
     value: String,
     modifier: Modifier = Modifier
 ) {
+    /**
+     * Small column displaying a single statistic value and label.
+     *
+     * @param label Short label (e.g., "Total", "Most", "Least").
+     * @param value Corresponding statistic value rendered prominently.
+     * @param modifier Optional modifier for layout.
+     */
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally

@@ -5,6 +5,13 @@ import java.io.FileInputStream
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
+/** Helper for memory-mapping TensorFlow Lite model files from assets. */
+
+/** Maps a `.tflite` asset file into memory for TFLite interpreter use.
+ * @param context App context.
+ * @param modelName Asset file name.
+ * @return Memory-mapped model buffer.
+ */
 fun loadModelFile(context: Context, modelName: String): MappedByteBuffer {
     val fileDescriptor = context.assets.openFd(modelName)
     val inputStream = FileInputStream(fileDescriptor.fileDescriptor)

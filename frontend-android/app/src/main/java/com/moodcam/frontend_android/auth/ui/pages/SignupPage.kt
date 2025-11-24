@@ -1,3 +1,7 @@
+/**
+ * @file SignupPage.kt
+ * @brief Composable implementing user registration UI and handling signup flow.
+ */
 package com.moodcam.frontend_android.auth.ui.pages
 
 import android.widget.Toast
@@ -27,6 +31,19 @@ import com.moodcam.frontend_android.auth.vm.AuthState
 import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 
+/**
+ * Registration screen composable featuring:
+ * - Email & password fields plus confirmation.
+ * - Visibility toggles for both password inputs.
+ * - Error toast feedback from auth state.
+ * - Navigation to login on user request.
+ * - Automatic navigation to home after successful signup.
+ *
+ * @param modifier Optional root modifier.
+ * @param onHomeNavigate Invoked after successful signup.
+ * @param onLoginNavigate Invoked to show login screen.
+ * @param authViewModel Authentication ViewModel.
+ */
 @Composable
 fun SignupPage(
     modifier: Modifier = Modifier,

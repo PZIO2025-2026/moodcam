@@ -1,3 +1,5 @@
+/** Rationale screen explaining why camera access is required. */
+
 package com.moodcam.frontend_android.ui.components.camera
 
 import androidx.compose.foundation.background
@@ -17,7 +19,10 @@ import androidx.compose.ui.unit.sp
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 
 /**
- * Displays rationale when camera permission was denied
+ * Rationale display when camera permission has been denied previously.
+ * Explains why the permission is required.
+ *
+ * @param modifier Optional modifier for root layout.
  */
 @Composable
 fun CameraPermissionRationale(

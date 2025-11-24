@@ -1,3 +1,5 @@
+/** Layout enforcing authentication before rendering protected content. */
+
 package com.moodcam.frontend_android.ui.layouts
 
 import androidx.compose.runtime.Composable
@@ -12,6 +14,14 @@ fun AuthorizedScreenLayout(
     onUnauthorized: () -> Unit,
     content: @Composable () -> Unit
 ) {
+    /**
+     * Layout wrapper enforcing authentication state before rendering content.
+     * Navigates via `onUnauthorized` when user becomes unauthenticated.
+     *
+     * @param authViewModel Authentication ViewModel.
+     * @param onUnauthorized Callback invoked when state transitions to unauthenticated.
+     * @param content Composable content shown only when authenticated.
+     */
     val authState = authViewModel.authState.observeAsState()
 
     LaunchedEffect(authState.value) {

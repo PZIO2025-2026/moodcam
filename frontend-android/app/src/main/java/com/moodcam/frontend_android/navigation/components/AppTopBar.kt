@@ -1,3 +1,5 @@
+/** Center-aligned top app bar showing title and conditional close action. */
+
 package com.moodcam.frontend_android.navigation.components
 
 import androidx.compose.material3.CenterAlignedTopAppBar

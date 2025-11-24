@@ -1,3 +1,5 @@
+/** Statistics card showing recent aggregated emotion counts with a pie chart. */
+
 package com.moodcam.frontend_android.ui.components.stats
 
 import androidx.compose.foundation.background
@@ -19,7 +21,12 @@ import com.moodcam.frontend_android.ui.components.charts.EmotionPieChart
 import org.koin.compose.koinInject
 
 /**
- * Card component showing emotion statistics with Pie Chart
+ * Card component showing aggregated emotion counts with a pie chart.
+ * Retrieves the last 30 detections for the provided user id.
+ *
+ * @param userId Current authenticated user id; if null loading is skipped.
+ * @param modifier Optional modifier for card layout.
+ * @param historyRepository Repository used to load recent emotions.
  */
 @Composable
 fun EmotionStatsCard(
@@ -30,7 +37,7 @@ fun EmotionStatsCard(
     var emotionCounts by remember { mutableStateOf<Map<String, Int>>(emptyMap()) }
     var isLoading by remember { mutableStateOf(true) }
 
-    // Load recent emotions
+    // Load recent emotions when user changes
     LaunchedEffect(userId) {
         if (userId != null) {
             historyRepository.getRecent(userId, null, 30) { emotions ->
@@ -85,11 +92,7 @@ fun EmotionStatsCard(
                         .height(300.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = "Loading...",
-                        color = Color.Gray,
-                        fontSize = 14.sp
-                    )
+                    Text("Loading...", color = Color.Gray, fontSize = 14.sp)
                 }
             } else {
                 EmotionPieChart(

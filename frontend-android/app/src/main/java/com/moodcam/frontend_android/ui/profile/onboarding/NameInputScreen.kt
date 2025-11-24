@@ -1,3 +1,5 @@
+/** Final onboarding step: enter and confirm display name. */
+
 package com.moodcam.frontend_android.ui.profile.onboarding
 
 import androidx.compose.foundation.background
@@ -18,6 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 
+/** Name input with validation.
+ * @param onCompleteClick Completion callback with name.
+ */
 @Composable
 fun NameInputScreen(
     onCompleteClick: (String) -> Unit

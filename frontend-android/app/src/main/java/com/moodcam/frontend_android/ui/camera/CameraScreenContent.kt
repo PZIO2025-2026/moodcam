@@ -14,8 +14,10 @@ import com.moodcam.frontend_android.ui.components.camera.*
 import com.moodcam.frontend_android.viewmodel.EmotionClassifierViewModel
 
 /**
- * Camera screen content when permission is granted
- * Displays camera preview with emotion detection overlay
+ * Full camera screen with live emotion detection overlay, save action, camera switch and feedback.
+ * @param authViewModel Authentication view model.
+ * @param classifierViewModel Emotion classifier view model.
+ * @param historyRepository Repository for persisting emotions.
  */
 @Composable
 fun CameraScreenContent(

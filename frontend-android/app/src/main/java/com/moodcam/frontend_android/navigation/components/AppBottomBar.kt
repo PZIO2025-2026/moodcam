@@ -1,3 +1,5 @@
+/** Bottom navigation bar for primary destinations. */
+
 package com.moodcam.frontend_android.navigation.components
 
 import androidx.compose.material.icons.Icons

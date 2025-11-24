@@ -1,3 +1,5 @@
+/** Registers the signup route. */
+
 package com.moodcam.frontend_android.navigation.screens.auth
 
 import androidx.compose.ui.Modifier
@@ -11,6 +13,12 @@ import com.moodcam.frontend_android.navigation.helpers.navigateToHome
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.signupRoute(nav: NavHostController) {
+    /**
+     * Registers the signup screen route.
+     * On success navigates to home; allows return to login.
+     *
+     * @param nav Host controller used for navigation actions.
+     */
     composable(Routes.SIGNUP) {
         val authViewModel: AuthViewModel = koinViewModel()
         

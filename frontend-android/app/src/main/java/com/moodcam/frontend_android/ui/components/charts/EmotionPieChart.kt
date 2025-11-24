@@ -1,3 +1,5 @@
+/** Donut-style animated pie chart visualizing emotion distribution. */
+
 package com.moodcam.frontend_android.ui.components.charts
 
 import androidx.compose.animation.core.Animatable
@@ -16,8 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-/**
- * Simple and beautiful Pie Chart for emotions using Compose Canvas
+/** @param data emotion name -> count map.
+ * @param modifier optional container modifier.
  */
 @Composable
 fun EmotionPieChart(

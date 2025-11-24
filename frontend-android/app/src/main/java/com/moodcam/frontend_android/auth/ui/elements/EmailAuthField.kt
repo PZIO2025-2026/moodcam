@@ -1,3 +1,8 @@
+/**
+ * @file EmailAuthField.kt
+ * @brief Email input field component for authentication
+ */
+
 package com.moodcam.frontend_android.auth.ui.elements
 
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +20,13 @@ fun EmailAuthField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    /**
+     * Text field for entering an email address with appropriate keyboard.
+     *
+     * @param value Current text value.
+     * @param onValueChange Callback when user changes text.
+     * @param modifier Optional modifier applied to the field.
+     */
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,

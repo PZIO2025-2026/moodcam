@@ -24,6 +24,10 @@ import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 import org.koin.compose.koinInject
 import java.util.*
 
+/** Statistics screen with week navigation, summary counts and pie chart distribution.
+ * @param modifier optional root modifier.
+ * @param authViewModel auth view model for user id.
+ */
 @Composable
 fun EmotionRecordStatistics(
     modifier: Modifier = Modifier,

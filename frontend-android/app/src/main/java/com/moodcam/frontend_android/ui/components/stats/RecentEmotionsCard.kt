@@ -1,3 +1,5 @@
+/** Card listing recent emotion detections with loading and empty states. */
+
 package com.moodcam.frontend_android.ui.components.stats
 
 import androidx.compose.foundation.background
@@ -22,7 +24,12 @@ import com.moodcam.frontend_android.ui.components.emotions.EmotionHistoryRow
 import org.koin.compose.koinInject
 
 /**
- * Card component showing recent emotion history list
+ * Card component listing recent emotion detections.
+ *
+ * @param userId Current authenticated user id; if null loading is skipped.
+ * @param modifier Optional modifier for card layout.
+ * @param limit Maximum number of recent records to fetch.
+ * @param historyRepository Repository used to load emotion history.
  */
 @Composable
 fun RecentEmotionsCard(
@@ -88,11 +95,7 @@ fun RecentEmotionsCard(
                         .height(200.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = "Loading...",
-                        color = Color.Gray,
-                        fontSize = 14.sp
-                    )
+                    Text("Loading...", color = Color.Gray, fontSize = 14.sp)
                 }
             } else if (recentEmotions.isEmpty()) {
                 Box(

@@ -1,3 +1,5 @@
+/** Week selector card allowing navigation across weeks of data. */
+
 package com.moodcam.frontend_android.ui.components.stats
 
 import androidx.compose.foundation.background
@@ -22,8 +24,13 @@ import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Week navigation component for browsing historical data
+/** @param weeksAgo number of weeks offset (0=current).
+ * @param weekStart start date of selected week.
+ * @param weekEnd end date of selected week.
+ * @param onPreviousWeek navigate to previous week.
+ * @param onNextWeek navigate to next week (disabled if current).
+ * @param onBackToCurrentWeek jump back to current week.
+ * @param modifier optional modifier.
  */
 @Composable
 fun WeekNavigationCard(

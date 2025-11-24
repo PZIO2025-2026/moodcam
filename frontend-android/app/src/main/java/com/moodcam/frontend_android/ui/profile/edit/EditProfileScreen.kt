@@ -1,3 +1,5 @@
+/** Screen for editing profile details (name only, age/email read-only). */
+
 package com.moodcam.frontend_android.ui.profile.edit
 
 import androidx.compose.foundation.background
@@ -20,6 +22,17 @@ import com.moodcam.frontend_android.auth.vm.AuthViewModel
 import com.moodcam.frontend_android.db.UserRepository
 import com.moodcam.frontend_android.ui.layouts.PremiumScreenLayout
 
+/** Minimal edit profile form.
+ * @param modifier Optional modifier.
+ * @param initialName Current name.
+ * @param initialAge Current age (read-only string).
+ * @param initialEmail Email (read-only).
+ * @param isLoading Loading flag.
+ * @param isSaving Saving flag.
+ * @param externalError External error message.
+ * @param onSaveClicked Save callback with new name.
+ * @param onCancelClicked Cancel callback.
+ */
 @Composable
 fun EditProfileScreen(
     modifier: Modifier = Modifier,

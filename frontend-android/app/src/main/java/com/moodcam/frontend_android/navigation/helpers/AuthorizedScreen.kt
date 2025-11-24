@@ -1,3 +1,5 @@
+/** Wrapper composable enforcing authentication before showing content. */
+
 package com.moodcam.frontend_android.navigation.helpers
 
 import androidx.compose.runtime.Composable

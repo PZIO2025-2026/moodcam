@@ -1,3 +1,5 @@
+/** Loads, observes and forwards profile state to `ProfileScreen`. */
+
 package com.moodcam.frontend_android.navigation.screens.profile
 
 import androidx.compose.runtime.*
@@ -15,6 +17,14 @@ fun ProfileScreenContent(
     onEditProfile: () -> Unit,
     onSettingsClicked: () -> Unit
 ) {
+    /**
+     * Composable wrapper that loads and observes profile state, forwarding
+     * derived values to `ProfileScreen` and handling refresh triggers from edit screen.
+     *
+     * @param navBackStackEntry Back stack entry used to observe saved state handle flags.
+     * @param onEditProfile Callback when user chooses to edit profile.
+     * @param onSettingsClicked Callback when settings icon is pressed.
+     */
     val authViewModel: AuthViewModel = koinViewModel()
     val profileViewModel: ProfileViewModel = koinViewModel()
     val profileState by profileViewModel.profileState.collectAsState()

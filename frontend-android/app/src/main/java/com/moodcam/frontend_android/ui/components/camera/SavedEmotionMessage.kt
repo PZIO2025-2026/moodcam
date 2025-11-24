@@ -1,3 +1,5 @@
+/** Temporary success message shown after saving an emotion. */
+
 package com.moodcam.frontend_android.ui.components.camera
 
 import androidx.compose.foundation.layout.Box
@@ -15,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 /**
- * Shows a temporary success message when emotion is saved
+ * Temporary success message after saving an emotion. Auto dismisses after 2 seconds.
+ *
+ * @param onDismiss Callback invoked after auto-dismiss.
+ * @param modifier Optional modifier for container.
  */
 @Composable
 fun SavedEmotionMessage(

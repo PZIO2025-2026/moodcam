@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['calculateweekrange_2ekt_0',['CalculateWeekRange.kt',['../CalculateWeekRange_8kt.html',1,'']]],
+  ['camerapermissionrationale_2ekt_1',['CameraPermissionRationale.kt',['../CameraPermissionRationale_8kt.html',1,'']]],
+  ['camerapermissionrequest_2ekt_2',['CameraPermissionRequest.kt',['../CameraPermissionRequest_8kt.html',1,'']]],
+  ['cameraprovider_3',['cameraProvider',['../namespacenull.html#a77856c6211bb2a56cf14e92c0b857d13',1,'null']]],
+  ['cameraroute_2ekt_4',['CameraRoute.kt',['../CameraRoute_8kt.html',1,'']]],
+  ['camerascreen_2ekt_5',['CameraScreen.kt',['../CameraScreen_8kt.html',1,'']]],
+  ['camerascreencontent_2ekt_6',['CameraScreenContent.kt',['../CameraScreenContent_8kt.html',1,'']]],
+  ['cameraview_2ekt_7',['CameraView.kt',['../CameraView_8kt.html',1,'']]],
+  ['cap_8',['cap',['../namespacevideo__capture__test.html#a26617c9e6d46ba490defdbcfb9fa7c8c',1,'video_capture_test']]],
+  ['chartconfig_2ekt_9',['ChartConfig.kt',['../ChartConfig_8kt.html',1,'']]],
+  ['classifierviewmodel_10',['classifierViewModel',['../CameraScreen_8kt.html#aeb017a56ce22fd6b25be0dc4119836dd',1,'CameraScreen.kt']]],
+  ['column_11',['Column',['../namespaceUnit.html#a75019f347285b750245b2e59fe7c387b',1,'Unit']]],
+  ['componentactivity_12',['ComponentActivity',['../namespaceComponentActivity.html',1,'']]],
+  ['composable_13',['composable',['../namespaceNavHostController.html#ad13a24eeb6e5a96cb7837aaa84c020a0',1,'NavHostController']]],
+  ['createuserprofile_14',['createUserProfile',['../namespaceFirebaseFirestore.html#ab4e468dba6bb3c9f8c3b69774d4f772b',1,'FirebaseFirestore']]],
+  ['crop_5fface_15',['crop_face',['../namespacepredictor.html#aab7a60a75e88515a7c50b3f9a47f93f2',1,'predictor']]],
+  ['cropandresizeface_16',['cropAndResizeFace',['../Images_8kt.html#a9a8d9c96735d32f215cc508d99a0ba53',1,'Images.kt']]]
+];

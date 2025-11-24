@@ -14,8 +14,22 @@ import java.nio.ByteOrder
 import androidx.core.graphics.get
 import androidx.core.graphics.createBitmap
 
+/**
+ * Image preprocessing and face detection utilities used for emotion recognition.
+ * Provides helpers for:
+ * - Detecting faces (ML Kit)
+ * - Converting CameraX frames to grayscale bitmaps
+ * - Cropping/resizing face regions
+ * - Normalizing pixel data for TensorFlow Lite inference.
+ */
+
 private const val TAG = "EmotionPreprocessing"
 
+/**
+ * Converts an `ImageProxy` to a rotated grayscale `Bitmap` by extracting its Y (luminance) plane.
+ * @param image CameraX YUV frame.
+ * @return Rotated grayscale bitmap.
+ */
 private fun imageProxyToGrayBitmap(image: ImageProxy): Bitmap {
     val yPlane = image.planes[0]
     val yBuffer = yPlane.buffer.duplicate()
@@ -44,7 +58,12 @@ private fun imageProxyToGrayBitmap(image: ImageProxy): Bitmap {
     return rotateBitmap(bitmap, image.imageInfo.rotationDegrees)
 }
 
-// Rotate bitmap to match the rotation applied during face detection
+/**
+ * Rotates a bitmap in place if needed.
+ * @param bitmap Source bitmap.
+ * @param degrees Rotation angle (0, 90, 180, 270).
+ * @return Rotated bitmap or original if degrees == 0.
+ */
 private fun rotateBitmap(bitmap: Bitmap, degrees: Int): Bitmap {
     if (degrees == 0) return bitmap
     
@@ -56,7 +75,11 @@ private fun rotateBitmap(bitmap: Bitmap, degrees: Int): Bitmap {
 }
 
 
-// Optimized: Work directly with ImageProxy instead of converting to Bitmap first
+/**
+ * Detects faces and returns the largest one (by bounding box area).
+ * @param imageProxy Camera frame.
+ * @param onFaceDetected Callback with largest face or null.
+ */
 @OptIn(ExperimentalGetImage::class)
 fun detectLargestFace(
     imageProxy: ImageProxy,
@@ -78,7 +101,13 @@ fun detectLargestFace(
             onFaceDetected(null)
         }
 }
-/** Crop face by bounding box and resize to a square target size. */
+/**
+ * Crops the detected face region and scales it to a square size.
+ * @param bitmap Source bitmap.
+ * @param face Detected face metadata.
+ * @param size Target square size (defaults to `ImageDefaults.FACE_CROP_SIZE`).
+ * @return Cropped & resized face bitmap.
+ */
 fun cropAndResizeFace(bitmap: Bitmap, face: Face, size: Int = ImageDefaults.FACE_CROP_SIZE): Bitmap {
     val box = face.boundingBox
     val x = box.left.coerceAtLeast(0)
@@ -90,9 +119,12 @@ fun cropAndResizeFace(bitmap: Bitmap, face: Face, size: Int = ImageDefaults.FACE
 }
 
 
-// Simplified: Convert grayscale bitmap to normalized float buffer
-// Matches Python: face_norm = face_resized / 255.0
-// Convert grayscale Bitmap to normalized float buffer using configured divisor. 
+/**
+ * Converts a grayscale bitmap to a normalized float buffer ([0,1]) for TFLite input.
+ * Periodically logs basic statistics for debugging.
+ * @param bitmap Grayscale bitmap.
+ * @return Direct `ByteBuffer` containing floats in native order.
+ */
 fun bitmapToGrayByteBuffer(bitmap: Bitmap): ByteBuffer {
     val inputBuffer = ByteBuffer.allocateDirect(bitmap.width * bitmap.height * Float.SIZE_BYTES)
     inputBuffer.order(ByteOrder.nativeOrder())
@@ -134,6 +166,12 @@ fun bitmapToGrayByteBuffer(bitmap: Bitmap): ByteBuffer {
     return inputBuffer
 }
 
+/**
+ * Runs the end‑to‑end emotion detection pipeline: detect face, preprocess, infer, emit label.
+ * @param image CameraX frame.
+ * @param tflite TFLite interpreter.
+ * @param onEmotionDetected Callback with predicted label (or `EmotionLabels.NO_FACE`).
+ */
 fun processImageProxy(
     image: ImageProxy,
     tflite: Interpreter,

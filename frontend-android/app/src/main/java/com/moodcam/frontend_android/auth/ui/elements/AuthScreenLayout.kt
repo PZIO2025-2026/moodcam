@@ -1,3 +1,8 @@
+/**
+ * @file AuthScreenLayout.kt
+ * @brief Layout wrapper for authentication screens
+ */
+
 package com.moodcam.frontend_android.auth.ui.elements
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +20,12 @@ fun AuthScreenLayout(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    /**
+     * Root layout for auth screens providing centered branding header and form content.
+     *
+     * @param modifier Optional modifier for the outer column.
+     * @param content Form composable scope rendered beneath the title.
+     */
     Column(
         modifier = modifier
             .fillMaxSize()
